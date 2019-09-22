@@ -5,6 +5,10 @@ import Permissions from 'react-native-permissions';
 import Sound from 'react-native-sound';
 import AudioRecord from 'react-native-audio-record';
 import { db, storage } from './src/config/firebase';
+var RNFetchBlob = require('react-native-fetch-blob').default
+
+//const userid = this.guidGenerator()
+const userid="Joe1234"
 
 export default class App extends Component {
     sound = null;
@@ -15,12 +19,13 @@ export default class App extends Component {
         paused: true
     };
 
+    
     async componentDidMount() {
         await this.checkPermission();
 
         const options = {
-            sampleRate: 16000,
-            channels: 1,
+            sampleRate: 44100,
+            channels: 2,
             bitsPerSample: 16,
             wavFile: 'test.wav'
         };
@@ -52,18 +57,79 @@ export default class App extends Component {
         AudioRecord.start();
     };
 
+    getSelectedImages(currentImage){
+        console.log("sending...")
+        const image = currentImage
+     
+        const Blob = RNFetchBlob.polyfill.Blob
+        const fs = RNFetchBlob.fs
+        window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
+        window.Blob = Blob
+     
+       
+        let uploadBlob = null
+        const imageRef = storage.ref('users/'+userid).child(userid+".wav")
+        let mime = 'audio/wav'
+        fs.readFile(image, 'base64')
+          .then((data) => {
+            return Blob.build(data, { type: `${mime};BASE64` })
+        })
+        .then((blob) => {
+            uploadBlob = blob
+            return imageRef.put(blob, { contentType: mime })
+          })
+          .then(() => {
+            uploadBlob.close()
+            return imageRef.getDownloadURL()
+          })
+          .then((url) => {
+            // URL of the image uploaded on Firebase storage
+            console.log(url);
+            this.sendAudioLinkToDb(url)
+            console.log("getting result...")
+            try{
+                this.getresult()
+            }catch(err){
+                console.log(err)
+            }
+            
+            
+          })
+          .catch((error) => {
+            console.log(error);
+     
+          })  
+     
+      }
+
+    guidGenerator() {
+    var S4 = function() {
+        return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+    };
+    return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+    }
+    
+    sendAudioLinkToDb(url){
+        db.ref().child('users').child(userid).set({
+          name: userid,
+          audio: url
+        })
+    }
+    
+    getresult = async () => {
+        const response = await fetch('https://heart-sound-discrimination.herokuapp.com/predict?user_id='+userid);
+        const json = await response.json();
+        // just log ‘json’
+        console.log(json);
+    }
+
     stop = async () => {
         if (!this.state.recording) return;
         console.log('stop record');
         let audioFile = await AudioRecord.stop();
         console.log('audioFile', audioFile);
         this.setState({ audioFile, recording: false });
-        const task = storage.ref().put(audioFile);
-        task.then((snapshot) => {
-            console.log(snapshot.downloadURL);
-        });
-
-
+        let downUrl = this.getSelectedImages(audioFile)
     };
 
     load = () => {
