@@ -37,6 +37,7 @@ export default class App extends Component {
             console.log('chunk size', chunk.byteLength);
             // do something with audio chunk
         });
+        //const api = this.getresult()
     }
 
     checkPermission = async () => {
@@ -86,13 +87,8 @@ export default class App extends Component {
             // URL of the image uploaded on Firebase storage
             console.log(url);
             this.sendAudioLinkToDb(url)
-            console.log("getting result...")
-            try{
-                this.getresult()
-            }catch(err){
-                console.log(err)
-            }
-            
+            console.log("getting result...")     
+            this.getResponse()
             
           })
           .catch((error) => {
@@ -116,8 +112,10 @@ export default class App extends Component {
         })
     }
     
-    getresult = async () => {
-        const response = await fetch('https://heart-sound-discrimination.herokuapp.com/predict?user_id='+userid);
+    getResponse = async () => {
+        const response = await fetch('https://heart-sound-discrimination.herokuapp.com/predict?user_id='+userid)
+        console.log(response)  
+        console.log("Waiting for response...")
         const json = await response.json();
         // just log ‘json’
         console.log(json);
