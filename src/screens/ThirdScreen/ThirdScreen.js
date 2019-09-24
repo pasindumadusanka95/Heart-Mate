@@ -28,7 +28,7 @@ const ThirdScreen = ()  => {
   return (
     <View style={styles.container}>
       <Text style={styles.welcome}>
-        THIS IS THE SECOND SCREEN!
+        THIS IS THE THIRD SCREEN!
       </Text>
     </View>
   );
