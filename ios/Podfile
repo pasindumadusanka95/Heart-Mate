@@ -27,11 +27,11 @@ target 'record' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-  pod 'react-native-fetch-blob', :path => '../node_modules/react-native-fetch-blob'
 
 
 
-  pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
+
+
 
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'

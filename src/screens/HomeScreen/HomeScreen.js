@@ -4,6 +4,7 @@ import Permissions from 'react-native-permissions';
 import Sound from 'react-native-sound';
 import AudioRecord from 'react-native-audio-record';
 import { db, storage } from '../../config/firebase';
+import { LineChart, Grid } from 'react-native-svg-charts'
 import {
   StyleSheet,
   Text,
@@ -36,6 +37,7 @@ export default class HomeScreen extends Component {
         paused: true,
         started: true,
         valueSlider: 50,
+        plotData: [1,2,3,10,12,9,0,23,102,1],
     };
 
     
@@ -52,11 +54,19 @@ export default class HomeScreen extends Component {
     AudioRecord.init(options);
 
     AudioRecord.on('data', data => {
-        const chunk = Buffer.from(data, 'base64');
-        console.log('chunk size', chunk.byteLength);
-        // do something with audio chunk
+      const chunk = Buffer.from(data, 'base64');
+      console.log('chunk size', chunk.byteLength);
+      // do something with audio chunk
+      console.log(chunk.byteLength)
+      //console.log(chunk)
+      // var array = [].slice.call(chunk)
+      // console.log(array)
+      // array = array.slice(0,50)
+      // this.setState({
+      //   plotData: array
+      // })
+      
     });
-    //const api = this.getresult()
     }
 
   checkPermission = async () => {
@@ -214,13 +224,10 @@ export default class HomeScreen extends Component {
       this.sound.pause();
       this.setState({ paused: true });
   };
-  //<Button onPress={this.start} title="Record" disabled={this.state.recording} />
-  //<Button onPress={this.stop} title="Stop" disabled={!this.state.recording} />
-  //<Button onPress={this.play} title="Play" disabled={!this.state.audioFile} />
-  //<Button onPress={this.pause} title="Pause" disabled={!this.state.audioFile} />
 
   render() {
     const valueSlider = this.state.valueSlider;
+    const plotData = this.state.plotData
     return (
       <View style={styles.container}>
         <View>
@@ -283,6 +290,17 @@ export default class HomeScreen extends Component {
               />
             </TouchableOpacity>
           )}
+          <View>
+            {/* <LineChart
+              style={{height:'30%',width:'100%' }}
+              data={plotData}
+              svg={{ stroke: 'rgb(134, 65, 244)' }}
+              contentInset={{ top: 5, bottom: 5 }}
+            >
+              <Grid />
+            </LineChart> */}
+            
+          </View>
         </View>
       </View>
     );
