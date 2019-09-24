@@ -29,6 +29,14 @@ target 'record' do
 
   pod 'react-native-fetch-blob', :path => '../node_modules/react-native-fetch-blob'
 
+
+
+  pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
+
+  pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
+
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
   target 'recordTests' do
     inherit! :search_paths
     # Pods for testing
