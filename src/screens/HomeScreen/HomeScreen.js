@@ -8,11 +8,12 @@ import {
   StyleSheet,
   Text,
   View,
-  Button
+  Button,
+  TouchableOpacity,
+  Image
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';  
 var RNFetchBlob = require('react-native-fetch-blob').default
-
 //const userid = this.guidGenerator()
 const userid="Joe1234"
 
@@ -74,7 +75,25 @@ export default class HomeScreen extends Component {
         const fs = RNFetchBlob.fs
         window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
         window.Blob = Blob
-     
+
+        const Fetch = RNFetchBlob.polyfill.Fetch
+        // replace built-in fetch
+        window.fetch = new Fetch({
+            // enable this option so that the response data conversion handled automatically
+            auto : true,
+            // when receiving response data, the module will match its Content-Type header
+            // with strings in this array. If it contains any one of string in this array, 
+            // the response body will be considered as binary data and the data will be stored
+            // in file system instead of in memory.
+            // By default, it only store response data to file system when Content-Type 
+            // contains string `application/octet`.
+            binaryContentTypes : [
+                'image/',
+                'video/',
+                'audio/',
+                'foo/',
+            ]
+        }).build()
        
         let uploadBlob = null
         const imageRef = storage.ref('users/'+userid).child(userid+".wav")
@@ -132,10 +151,13 @@ export default class HomeScreen extends Component {
     stop = async () => {
         if (!this.state.recording) return;
         console.log('stop record');
+        this.setState({
+          started:true
+        })
         let audioFile = await AudioRecord.stop();
         console.log('audioFile', audioFile);
-        this.setState({ audioFile, recording: false, started:true });
-        let downUrl = this.uploadFiles(audioFile)
+        this.uploadFiles(audioFile)
+        this.setState({ audioFile, recording: false});
     };
 
     load = () => {
@@ -182,25 +204,43 @@ export default class HomeScreen extends Component {
         this.sound.pause();
         this.setState({ paused: true });
     };
-
+    //<Button onPress={this.start} title="Record" disabled={this.state.recording} />
+    //<Button onPress={this.stop} title="Stop" disabled={!this.state.recording} />
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Start Recording
-        </Text>
         <View>
           {this.state.started ? (
-            <Button onPress={this.start} title="Record" disabled={this.state.recording} />
+            <TouchableOpacity 
+              activeOpacity={0.5} 
+              onPress={this.start} 
+              title="Record" 
+              disabled={this.state.recording}
+              style={styles.recBtn}>
+              <Image
+                source={require('../../../imgs/record.png')}
+                style={styles.image}
+              />
+            </TouchableOpacity>
           ):(
-            <Button onPress={this.stop} title="Stop" disabled={!this.state.recording} />
+            <TouchableOpacity 
+              activeOpacity={0.5} 
+              onPress={this.stop} 
+              title="Stop" 
+              disabled={!this.state.recording}
+              style={styles.recBtn}>
+              <Image
+                source={require('../../../imgs/stop.png')}
+                style={styles.image}
+              />
+            </TouchableOpacity>
           )
           }
               
           {this.state.paused ? (
-              <Button onPress={this.play} title="Play" disabled={!this.state.audioFile} />
+            <Button onPress={this.play} title="Play" disabled={!this.state.audioFile} />
           ) : (
-              <Button onPress={this.pause} title="Pause" disabled={!this.state.audioFile} />
+            <Button onPress={this.pause} title="Pause" disabled={!this.state.audioFile} />
           )}
         </View>
       </View>
@@ -229,6 +269,14 @@ const styles = StyleSheet.create({
     width: 16,
     height: 16,
   },
+  image: {
+    width: 200,
+    height: 200,
+    resizeMode: 'stretch'
+  },
+  recBtn: {
+    marginBottom: 5,
+  }
 });
 
 HomeScreen.navigationOptions = {
