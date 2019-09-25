@@ -28,7 +28,7 @@ const ThirdScreen = ()  => {
   return (
     <View style={styles.container}>
       <Text style={styles.welcome}>
-        THIS IS THE THIRD SCREEN!
+        THIS IS THE History SCREEN! preious recorded sounds results
       </Text>
     </View>
   );

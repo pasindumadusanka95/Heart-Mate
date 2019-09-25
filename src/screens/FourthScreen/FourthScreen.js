@@ -28,7 +28,7 @@ const FourthScreen = ()  => {
   return (
     <View style={styles.container}>
       <Text style={styles.welcome}>
-        THIS IS THE FOURTH SCREEN!
+        THIS IS THE settings SCREEN!
       </Text>
     </View>
   );

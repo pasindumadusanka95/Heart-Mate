@@ -4,7 +4,8 @@ import Permissions from 'react-native-permissions';
 import Sound from 'react-native-sound';
 import AudioRecord from 'react-native-audio-record';
 import { db, storage } from '../../config/firebase';
-import { LineChart, Grid } from 'react-native-svg-charts'
+import { AreaChart, LineChart, Grid } from 'react-native-svg-charts'
+import * as shape from 'd3-shape'
 import {
   StyleSheet,
   Text,
@@ -37,7 +38,7 @@ export default class HomeScreen extends Component {
         paused: true,
         started: true,
         valueSlider: 50,
-        plotData: [1,2,3,10,12,9,0,23,102,1],
+        plotData: [],
     };
 
     
@@ -55,20 +56,22 @@ export default class HomeScreen extends Component {
 
     AudioRecord.on('data', data => {
       const chunk = Buffer.from(data, 'base64');
-      console.log('chunk size', chunk.byteLength);
+      //console.log('chunk size', chunk.byteLength);
       // do something with audio chunk
-      console.log(chunk.byteLength)
-      //console.log(chunk)
-      // var array = [].slice.call(chunk)
-      // console.log(array)
-      // array = array.slice(0,50)
-      // this.setState({
-      //   plotData: array
-      // })
+
+      var array = [].slice.call(chunk)
+      array = array.slice(0,50)
+      this.setState({
+        plotData: array
+      })
       
     });
     }
 
+
+  audioOnPlotter(){
+
+  }
   checkPermission = async () => {
       const p = await Permissions.check('microphone');
       console.log('permission check', p);
@@ -136,7 +139,7 @@ export default class HomeScreen extends Component {
           this.sendAudioLinkToDb(url)
           console.log("getting result...")     
           this.getResponse()
-          
+                    
         })
         .catch((error) => {
           console.log(error);
@@ -166,6 +169,10 @@ export default class HomeScreen extends Component {
       const json = await response.json();
       // just log ‘json’
       console.log(json);
+      this.setState({
+        result: json
+      })
+      await this.props.navigation.navigate('result', { data: "result is bad" })
   }
 
   stop = async () => {
@@ -177,7 +184,7 @@ export default class HomeScreen extends Component {
       let audioFile = await AudioRecord.stop();
       console.log('audioFile', audioFile);
       this.uploadFiles(audioFile)
-      this.setState({ audioFile, recording: false});
+      this.setState({ audioFile, recording: false, plotData: []});
   };
 
   load = () => {
@@ -230,8 +237,7 @@ export default class HomeScreen extends Component {
     const plotData = this.state.plotData
     return (
       <View style={styles.container}>
-        <View>
-          {this.state.started ? (
+        {this.state.started ? (
             <TouchableOpacity 
               activeOpacity={0.5} 
               onPress={this.start} 
@@ -257,12 +263,36 @@ export default class HomeScreen extends Component {
             </TouchableOpacity>
           )
           }
-          
+
+        <View>
+          {/* <LineChart
+            style={{height:'30%',width:'100%' }}
+            data={plotData}
+            svg={{ stroke: 'rgb(134, 65, 244)' }}
+            curve={shape.curveNatural}
+            contentInset={{ top: 5, bottom: 5 }}
+          >
+            <Grid />
+          </LineChart> */}
+
+          <AreaChart
+            style={styles.chart}
+            data={plotData}
+            contentInset={{ top: 30, bottom: 30 }}
+            curve={shape.curveNatural}
+            // svg={{ stroke: 'rgb(134, 65, 244)' }}
+            svg={{ stroke: 'rgb(0, 0, 0)' }}
+          >
+            {/* <Grid /> */}
+          </AreaChart>        
+        </View>
+        <View style={styles.player}>
           <Slider
             step={1}
             maximumValue={100}
             onValueChange={this.change.bind(this)}
             value={valueSlider}
+            style={styles.slider}
           />
           
           {this.state.paused ? (
@@ -290,18 +320,7 @@ export default class HomeScreen extends Component {
               />
             </TouchableOpacity>
           )}
-          <View>
-            {/* <LineChart
-              style={{height:'30%',width:'100%' }}
-              data={plotData}
-              svg={{ stroke: 'rgb(134, 65, 244)' }}
-              contentInset={{ top: 5, bottom: 5 }}
-            >
-              <Grid />
-            </LineChart> */}
-            
-          </View>
-        </View>
+        </View>       
       </View>
     );
   }
@@ -314,32 +333,35 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-  tabIcon: {
-    width: 16,
-    height: 16,
-  },
   image: {
-    width: 200,
-    height: 200,
+    marginTop: 50,
+    width: 250,
+    height: 250,
     resizeMode: 'stretch'
   },
   recBtn: {
     marginBottom: 5,
   },
   playImage: {
-    width: 50,
-    height: 50,
+    width: 30,
+    height: 30,
     resizeMode: 'stretch'
+  },
+  chart: {
+    marginTop: 3,
+    height: 120,
+    width: 300
+  },
+  slider: {
+    marginTop: 40,
+    width: 300,
+
+  },
+  player: {
+    flexDirection:'row', 
+    flexWrap:'wrap',
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 });
 
