@@ -4,7 +4,7 @@ import Permissions from 'react-native-permissions';
 import Sound from 'react-native-sound';
 import AudioRecord from 'react-native-audio-record';
 import { db, storage } from '../../config/firebase';
-import { AreaChart, LineChart, Grid } from 'react-native-svg-charts'
+import {PieChart, BarChart, AreaChart, LineChart, Grid } from 'react-native-svg-charts'
 import * as shape from 'd3-shape'
 import {
   StyleSheet,
@@ -38,7 +38,7 @@ export default class HomeScreen extends Component {
         paused: true,
         started: true,
         valueSlider: 50,
-        plotData: [],
+        plotData: [50, 10, 40, 95, -4, -24, null, 85, undefined, 0, 35, 53, -53, 24, 50, -20, -80],
     };
 
     
@@ -49,6 +49,7 @@ export default class HomeScreen extends Component {
         sampleRate: 44100,
         channels: 2,
         bitsPerSample: 16,
+        audioSource: 9,
         wavFile: 'test.wav'
     };
 
@@ -59,11 +60,11 @@ export default class HomeScreen extends Component {
       //console.log('chunk size', chunk.byteLength);
       // do something with audio chunk
 
-      var array = [].slice.call(chunk)
-      array = array.slice(0,50)
-      this.setState({
-        plotData: array
-      })
+      // var array = [].slice.call(chunk)
+      // array = array.slice(0,50)
+      // this.setState({
+      //   plotData: array
+      // })
       
     });
     }
@@ -233,8 +234,6 @@ export default class HomeScreen extends Component {
   };
 
   render() {
-    const valueSlider = this.state.valueSlider;
-    const plotData = this.state.plotData
     return (
       <View style={styles.container}>
         {this.state.started ? (
@@ -264,29 +263,18 @@ export default class HomeScreen extends Component {
           )
           }
 
-        <View>
-          {/* <LineChart
-            style={{height:'30%',width:'100%' }}
-            data={plotData}
-            svg={{ stroke: 'rgb(134, 65, 244)' }}
-            curve={shape.curveNatural}
-            contentInset={{ top: 5, bottom: 5 }}
-          >
-            <Grid />
-          </LineChart> */}
-
-          <AreaChart
+        <View style={styles.chartContainer}>
+          {/* <AreaChart
             style={styles.chart}
             data={plotData}
             contentInset={{ top: 30, bottom: 30 }}
             curve={shape.curveNatural}
-            // svg={{ stroke: 'rgb(134, 65, 244)' }}
-            svg={{ stroke: 'rgb(0, 0, 0)' }}
+            svg={{ stroke: 'rgb(134, 65, 244)' }}
           >
-            {/* <Grid /> */}
-          </AreaChart>        
+            <Grid /> 
+          </AreaChart> */}
         </View>
-        <View style={styles.player}>
+        {/* <View style={styles.player}>
           <Slider
             step={1}
             maximumValue={100}
@@ -320,7 +308,7 @@ export default class HomeScreen extends Component {
               />
             </TouchableOpacity>
           )}
-        </View>       
+        </View>        */}
       </View>
     );
   }
@@ -334,7 +322,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
   },
   image: {
-    marginTop: 50,
+    marginTop: 10,
     width: 250,
     height: 250,
     resizeMode: 'stretch'
@@ -343,14 +331,14 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   playImage: {
-    width: 30,
-    height: 30,
+    width: 20,
+    height: 20,
     resizeMode: 'stretch'
   },
   chart: {
-    marginTop: 3,
-    height: 120,
-    width: 300
+    marginTop: 5,
+    height: 150,
+    width: 200
   },
   slider: {
     marginTop: 40,

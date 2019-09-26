@@ -6,6 +6,7 @@ import {
   View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { PieChart } from 'react-native-svg-charts'
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -22,17 +23,49 @@ const styles = StyleSheet.create({
     width: 16,
     height: 16,
   },
+  chart: {
+    marginTop: 5,
+    height: 300,
+    width: 300
+  },
 });
 
 
 export default class SecondScreen extends Component{
-  
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedSlice: {
+        label: '',
+        value: 0
+      },
+      labelWidth: 0
+    }
+  }
   render(){
+    const data = [ 50, 20, 30]
+    const randomColor = () => ('#' + (Math.random() * 0xFFFFFF << 0).toString(16) + '000000').slice(0, 7)
+    const pieData = data
+    .filter(value => value > 0)
+    .map((value, index) => ({
+        value,
+        svg: {
+            fill: randomColor(),
+            onPress: () => console.log('press', index),
+        },
+        key: `pie-${index}`,
+    })) 
+
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          THIS IS THE Result SCREEN! current results and charts should displayed here
-        </Text>
+        <View>
+          <Text style={styles.welcome}>
+            THIS IS THE Result SCREEN! current results and charts should displayed here
+          </Text>
+        </View>
+        <View style={styles.chartContainer}>
+          <PieChart style={styles.chart} data={pieData} />
+        </View>
       </View>
     );
   }
