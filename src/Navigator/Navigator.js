@@ -3,15 +3,17 @@ import HomeScreen from '../screens/HomeScreen/HomeScreen';
 import SecondScreen from '../screens/SecondScreen/SecondScreen';
 import ThirdScreen from '../screens/ThirdScreen/ThirdScreen';
 import FourthScreen from '../screens/FourthScreen/FourthScreen';
+import FifthScreen from '../screens/FifthScreen/FifthScreen';
 import {createAppContainer} from 'react-navigation';  
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 
 const TabNavigator = createMaterialBottomTabNavigator(  
     {
+      info: { screen: FourthScreen },
+      History: { screen: ThirdScreen },
       record: { screen: HomeScreen },
       result: { screen: SecondScreen },
-      History: { screen: ThirdScreen },
-      Cart: { screen: FourthScreen },
+      settings: { screen: FifthScreen },
     },
     {
       initialRouteName: 'record',

@@ -38,7 +38,7 @@ ThirdScreen.navigationOptions = {
   tabBarLabel:'third',  
   tabBarIcon: ({ tintColor }) => (  
       <View>  
-          <Icon style={[{color: tintColor}]} size={25} name={'ios-list'}/>  
+          <Icon style={[{color: tintColor}]} size={25} name={'ios-time'}/>  
       </View>),    
 };
 

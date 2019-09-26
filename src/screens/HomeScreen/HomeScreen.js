@@ -69,10 +69,6 @@ export default class HomeScreen extends Component {
     });
     }
 
-
-  audioOnPlotter(){
-
-  }
   checkPermission = async () => {
       const p = await Permissions.check('microphone');
       console.log('permission check', p);
@@ -150,10 +146,10 @@ export default class HomeScreen extends Component {
     }
 
   guidGenerator() {
-  var S4 = function() {
-      return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
-  };
-  return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+    var S4 = function() {
+        return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+    };
+    return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
   }
   
   sendAudioLinkToDb(url){
@@ -164,45 +160,45 @@ export default class HomeScreen extends Component {
   }
   
   getResponse = async () => {
-      const response = await fetch('https://heart-sound-discrimination.herokuapp.com/predict?user_id='+userid)
-      console.log(response)  
-      console.log("Waiting for response...")
-      const json = await response.json();
-      // just log ‘json’
-      console.log(json);
-      this.setState({
-        result: json
-      })
-      await this.props.navigation.navigate('result', { data: "result is bad" })
+    const response = await fetch('https://heart-sound-discrimination.herokuapp.com/predict?user_id='+userid)
+    console.log(response)  
+    console.log("Waiting for response...")
+    const json = await response.json();
+    // just log ‘json’
+    console.log(json);
+    this.setState({
+      result: json
+    })
+    await this.props.navigation.navigate('result', { data: "result is bad" })
   }
 
   stop = async () => {
-      if (!this.state.recording) return;
-      console.log('stop record');
-      this.setState({
-        started:true
-      })
-      let audioFile = await AudioRecord.stop();
-      console.log('audioFile', audioFile);
-      this.uploadFiles(audioFile)
-      this.setState({ audioFile, recording: false, plotData: []});
+    if (!this.state.recording) return;
+    console.log('stop record');
+    this.setState({
+      started:true
+    })
+    let audioFile = await AudioRecord.stop();
+    console.log('audioFile', audioFile);
+    this.uploadFiles(audioFile)
+    this.setState({ audioFile, recording: false, plotData: []});
   };
 
   load = () => {
-      return new Promise((resolve, reject) => {
-          if (!this.state.audioFile) {
-              return reject('file path is empty');
-          }
+    return new Promise((resolve, reject) => {
+        if (!this.state.audioFile) {
+            return reject('file path is empty');
+        }
 
-          this.sound = new Sound(this.state.audioFile, '', error => {
-              if (error) {
-                  console.log('failed to load the file', error);
-                  return reject(error);
-              }
-              this.setState({ loaded: true });
-              return resolve();
-          });
-      });
+        this.sound = new Sound(this.state.audioFile, '', error => {
+            if (error) {
+                console.log('failed to load the file', error);
+                return reject(error);
+            }
+            this.setState({ loaded: true });
+            return resolve();
+        });
+    });
   };
 
   play = async () => {
@@ -237,32 +233,34 @@ export default class HomeScreen extends Component {
     return (
       <View style={styles.container}>
         {this.state.started ? (
-            <TouchableOpacity 
-              activeOpacity={0.5} 
-              onPress={this.start} 
-              title="Record" 
-              disabled={this.state.recording}
-              style={styles.recBtn}>
-              <Image
-                source={require('../../../imgs/record.png')}
-                style={styles.image}
-              />
-            </TouchableOpacity>
+          <TouchableOpacity 
+            activeOpacity={0.5} 
+            onPress={this.start} 
+            title="Record" 
+            disabled={this.state.recording}
+            style={styles.recBtn}>
+            <Image
+              source={require('../../../imgs/record.png')}
+              style={styles.image}
+            />
+          </TouchableOpacity>
           ):(
-            <TouchableOpacity 
-              activeOpacity={0.5} 
-              onPress={this.stop} 
-              title="Stop" 
-              disabled={!this.state.recording}
-              style={styles.recBtn}>
-              <Image
-                source={require('../../../imgs/stop.png')}
-                style={styles.image}
-              />
-            </TouchableOpacity>
+          <TouchableOpacity 
+            activeOpacity={0.5} 
+            onPress={this.stop} 
+            title="Stop" 
+            disabled={!this.state.recording}
+            style={styles.recBtn}>
+            <Image
+              source={require('../../../imgs/stop.png')}
+              style={styles.image}
+            />
+          </TouchableOpacity>
           )
           }
-
+        <Text style={styles.welcome}>
+          Plug microphone and start recording
+        </Text>
         <View style={styles.chartContainer}>
           {/* <AreaChart
             style={styles.chart}
@@ -329,6 +327,12 @@ const styles = StyleSheet.create({
   },
   recBtn: {
     marginBottom: 5,
+  },
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+    marginTop: 40
   },
   playImage: {
     width: 20,

@@ -24,22 +24,22 @@ const styles = StyleSheet.create({
   },
 });
 
-const FourthScreen = ()  => {
+const FifthScreen = ()  => {
   return (
     <View style={styles.container}>
       <Text style={styles.welcome}>
-        THIS IS THE infomation SCREEN!
+        THIS IS THE settings SCREEN!
       </Text>
     </View>
   );
 }
 
-FourthScreen.navigationOptions = {
-  tabBarLabel:'fourth',  
+FifthScreen.navigationOptions = {
+  tabBarLabel:'fifth',  
   tabBarIcon: ({ tintColor }) => (  
       <View>  
-          <Icon style={[{color: tintColor}]} size={25} name={'ios-info'}/>  
+          <Icon style={[{color: tintColor}]} size={25} name={'ios-settings'}/>  
       </View>),    
 };
 
-export default FourthScreen
+export default FifthScreen
