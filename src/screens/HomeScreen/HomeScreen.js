@@ -169,7 +169,7 @@ export default class HomeScreen extends Component {
     this.setState({
       result: json
     })
-    await this.props.navigation.navigate('result', { data: "result is bad" })
+    this.props.navigation.navigate('result', { data: json['result'] })
   }
 
   stop = async () => {
@@ -230,6 +230,7 @@ export default class HomeScreen extends Component {
   };
 
   render() {
+    const { navigate } = this.props.navigation; 
     return (
       <View style={styles.container}>
         {this.state.started ? (

@@ -43,6 +43,7 @@ export default class SecondScreen extends Component{
     }
   }
   render(){
+    const { navigation } = this.props; 
     const data = [ 50, 20, 30]
     const randomColor = () => ('#' + (Math.random() * 0xFFFFFF << 0).toString(16) + '000000').slice(0, 7)
     const pieData = data
@@ -55,12 +56,13 @@ export default class SecondScreen extends Component{
         },
         key: `pie-${index}`,
     })) 
-
+    const data2 = navigation.getParam('data', 'NO-data'); 
     return (
       <View style={styles.container}>
         <View>
           <Text style={styles.welcome}>
             THIS IS THE Result SCREEN! current results and charts should displayed here
+            {data2}
           </Text>
         </View>
         <View style={styles.chartContainer}>

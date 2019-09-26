@@ -38,7 +38,7 @@ FourthScreen.navigationOptions = {
   tabBarLabel:'fourth',  
   tabBarIcon: ({ tintColor }) => (  
       <View>  
-          <Icon style={[{color: tintColor}]} size={25} name={'ios-info'}/>  
+          <Icon style={[{color: tintColor}]} size={25} name={'ios-information-circle'}/>  
       </View>),    
 };
 
