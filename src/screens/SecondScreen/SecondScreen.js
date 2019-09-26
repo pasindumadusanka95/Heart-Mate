@@ -61,8 +61,7 @@ export default class SecondScreen extends Component{
       <View style={styles.container}>
         <View>
           <Text style={styles.welcome}>
-            THIS IS THE Result SCREEN! current results and charts should displayed here
-            {data2}
+            Your recorded heart sound is a type {data2} pattern.
           </Text>
         </View>
         <View style={styles.chartContainer}>
