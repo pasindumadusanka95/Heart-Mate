@@ -3,7 +3,8 @@ import {
   StyleSheet,
   Text,
   Image,
-  View
+  View,
+  TouchableOpacity
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 const styles = StyleSheet.create({
@@ -13,25 +14,62 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
+  text: {
+    color: '#4f603c',
+    justifyContent: 'flex-start'
+ },
   tabIcon: {
     width: 16,
     height: 16,
   },
 });
 
-const ThirdScreen = ()  => {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.welcome}>
-        THIS IS THE History SCREEN! preious recorded sounds results
-      </Text>
-    </View>
-  );
+class ThirdScreen extends Component{
+  state = {
+    names: [
+       {
+          id: 0,
+          name: 'Ben',
+       },
+       {
+          id: 1,
+          name: 'Susan',
+       },
+       {
+          id: 2,
+          name: 'Robert',
+       },
+       {
+          id: 3,
+          name: 'Mary',
+       }
+    ]
+ }
+
+  alertItemName = (item) => {
+    alert(item.name)
+  }
+
+  render(){
+    return (
+      <View style={styles.container}>
+        <View>
+          {
+            this.state.names.map((item, index) => (
+              <TouchableOpacity
+                  key = {item.id}
+                  style = {styles.container}
+                  onPress = {() => this.alertItemName(item)}>
+                  <Text style = {styles.text}>
+                    {item.name}
+                  </Text>
+              </TouchableOpacity>
+            ))
+          }
+        </View>
+      </View>
+    );
+  }
 }
 
 ThirdScreen.navigationOptions = {

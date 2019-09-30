@@ -4,8 +4,7 @@ import Permissions from 'react-native-permissions';
 import Sound from 'react-native-sound';
 import AudioRecord from 'react-native-audio-record';
 import { db, storage } from '../../config/firebase';
-import {PieChart, BarChart, AreaChart, LineChart, Grid } from 'react-native-svg-charts'
-import * as shape from 'd3-shape'
+import {Alert} from 'react-native'
 import {
   StyleSheet,
   Text,
@@ -82,9 +81,10 @@ export default class HomeScreen extends Component {
   };
 
   start = () => {
-      console.log('start record');
-      this.setState({ audioFile: '', recording: true, loaded: false, started: false });
-      AudioRecord.start();
+    
+    console.log('start record');
+    this.setState({ audioFile: '', recording: true, loaded: false, started: false });
+    AudioRecord.start();
   };
 
   uploadFiles(currentImage){
@@ -169,7 +169,7 @@ export default class HomeScreen extends Component {
     this.setState({
       result: json
     })
-    this.props.navigation.navigate('result', { data: json['result'] })
+    this.props.navigation.navigate('result', { data: json })
   }
 
   stop = async () => {
@@ -259,9 +259,6 @@ export default class HomeScreen extends Component {
           </TouchableOpacity>
           )
           }
-        <Text style={styles.welcome}>
-          Plug microphone and start recording
-        </Text>
         <View style={styles.chartContainer}>
           {/* <AreaChart
             style={styles.chart}
@@ -355,7 +352,7 @@ const styles = StyleSheet.create({
     flexWrap:'wrap',
     justifyContent: 'center',
     alignItems: 'center',
-  }
+  },
 });
 
 HomeScreen.navigationOptions = {
