@@ -38,6 +38,8 @@ target 'record' do
 
   pod 'RNSVG', :path => '../node_modules/react-native-svg'
 
+  pod 'RNFS', :path => '../node_modules/react-native-fs'
+
   target 'recordTests' do
     inherit! :search_paths
     # Pods for testing

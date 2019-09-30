@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
   }
 });
 
+const  pieDats = []
 
 export default class SecondScreen extends Component{
   constructor(props) {
@@ -85,9 +86,8 @@ export default class SecondScreen extends Component{
   render(){
     const { navigation } = this.props; 
     const dataJson = navigation.getParam('data', {class: "None",precentage: "[10,90]"});
-    const pieDatas = this.handleJSON((dataJson))
+    pieDatas = this.handleJSON((dataJson))
 
-    
     const data = [
       {
           key: 1,
@@ -101,7 +101,7 @@ export default class SecondScreen extends Component{
       },
   ]
 
-  const Labels = ({ slices, height, width }) => {
+    const Labels = ({ slices, height, width }) => {
       return slices.map((slice, index) => {
           const { labelCentroid, pieCentroid, data } = slice;
           return (
@@ -147,6 +147,7 @@ export default class SecondScreen extends Component{
 SecondScreen.navigationOptions = {
   tabBarLabel:'Result',  
   title: 'Result',
+  headerTitle: "hello",
   tabBarIcon: ({ tintColor }) => (  
       <View>  
           <Icon style={[{color: tintColor}]} size={25} name={'ios-heart'}/>  

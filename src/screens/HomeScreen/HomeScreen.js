@@ -18,6 +18,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 var RNFetchBlob = require('react-native-fetch-blob').default
 //const userid = this.guidGenerator()
 const userid="Joe1234"
+var RNFS = require('react-native-fs');
+var path = RNFS.DocumentDirectoryPath + '/'+userid+'.txt';
 
 export default class HomeScreen extends Component {
 
@@ -26,6 +28,33 @@ export default class HomeScreen extends Component {
       return {
         value: parseFloat(value),
       };
+    });
+  }
+
+  writeData= async (newData) =>{
+    let oldText = String(this.readData())
+    let classofaudio = newData['class']
+    let precentage = newData['precentage']
+    let newText = "\n"+classofaudio+precentage
+    RNFS.appendFile(path, newText, 'utf8')
+    .then((success) => {
+      console.log(path)
+      console.log('FILE WRITTEN!');
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
+  }
+
+
+
+  readData= async () =>{
+    RNFS.readFile(path, 'ascii').then(res => {
+      console.log(res)
+      return res
+    })
+    .catch(err => {
+      console.log(err.message, err.code);
     });
   }
 
@@ -58,13 +87,6 @@ export default class HomeScreen extends Component {
       const chunk = Buffer.from(data, 'base64');
       //console.log('chunk size', chunk.byteLength);
       // do something with audio chunk
-
-      // var array = [].slice.call(chunk)
-      // array = array.slice(0,50)
-      // this.setState({
-      //   plotData: array
-      // })
-      
     });
     }
 
@@ -80,8 +102,7 @@ export default class HomeScreen extends Component {
       console.log('permission request', p);
   };
 
-  start = () => {
-    
+  start = () => {    
     console.log('start record');
     this.setState({ audioFile: '', recording: true, loaded: false, started: false });
     AudioRecord.start();
@@ -169,6 +190,7 @@ export default class HomeScreen extends Component {
     this.setState({
       result: json
     })
+    this.writeData(json)
     this.props.navigation.navigate('result', { data: json })
   }
 
