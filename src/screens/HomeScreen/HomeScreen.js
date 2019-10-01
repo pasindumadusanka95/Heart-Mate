@@ -4,7 +4,8 @@ import Permissions from 'react-native-permissions';
 import Sound from 'react-native-sound';
 import AudioRecord from 'react-native-audio-record';
 import { db, storage } from '../../config/firebase';
-import {Alert} from 'react-native'
+import {Alert} from 'react-native';
+import Frontpage from '../../Animations/frontanimation'
 import {
   StyleSheet,
   Text,
@@ -29,6 +30,12 @@ export default class HomeScreen extends Component {
         value: parseFloat(value),
       };
     });
+  }
+
+
+  loading(){
+    alert('ssssssssss')
+    this.setState({show:true})
   }
 
   writeData= async (newData) =>{
@@ -65,6 +72,7 @@ export default class HomeScreen extends Component {
         loaded: false,
         paused: true,
         started: true,
+        show:false,
         valueSlider: 50,
         plotData: [50, 10, 40, 95, -4, -24, null, 85, undefined, 0, 35, 53, -53, 24, 50, -20, -80],
     };
@@ -180,6 +188,10 @@ export default class HomeScreen extends Component {
         })  
     
     }
+    componentWillMount(){
+      setTimeout( () => {this.loading()}, 5000);  
+
+    }
 
   guidGenerator() {
     var S4 = function() {
@@ -270,6 +282,8 @@ export default class HomeScreen extends Component {
   render() {
     const { navigate } = this.props.navigation; 
     return (
+      <View style={styles.page}>
+        {this.state.show ?
       <View style={styles.container}>
         {this.state.started ? (
           <TouchableOpacity 
@@ -344,6 +358,14 @@ export default class HomeScreen extends Component {
           )}
         </View>        */}
       </View>
+      :
+        <View style={styles.page}>
+<Frontpage></Frontpage>
+      </View>
+
+        }
+        </View>
+      
     );
   }
 }
@@ -354,6 +376,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+  },
+  page:{
+    flex:1,
+    justifyContent: 'center'
   },
   image: {
     marginTop: 10,
