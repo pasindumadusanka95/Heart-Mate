@@ -16,12 +16,30 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#4f603c',
-    justifyContent: 'flex-start'
+    textAlign: 'left', alignSelf: 'stretch',
+    fontSize: 15,
  },
   tabIcon: {
     width: 16,
     height: 16,
   },
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  },
+  top: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    marginTop: 5,
+    width: 380
+  },
+  listItem: {
+    borderColor: "green",
+    borderWidth: 1,
+    margin: 5,
+    padding: 10
+  }
 });
 
 class ThirdScreen extends Component{
@@ -53,12 +71,13 @@ class ThirdScreen extends Component{
   render(){
     return (
       <View style={styles.container}>
-        <View>
+        <Text style={styles.welcome}>Last Recordings</Text>
+        <View style={styles.top}>
           {
             this.state.names.map((item, index) => (
               <TouchableOpacity
+                  style={styles.listItem}
                   key = {item.id}
-                  style = {styles.container}
                   onPress = {() => this.alertItemName(item)}>
                   <Text style = {styles.text}>
                     {item.name}

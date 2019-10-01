@@ -188,6 +188,16 @@ android {
 }
 
 dependencies {
+compile 'com.facebook.fresco:fresco:1.+'
+
+    // For animated GIF support
+    compile 'com.facebook.fresco:animated-gif:1.+'
+
+    // For WebP support, including animated WebP
+    compile 'com.facebook.fresco:animated-webp:1.+'
+    compile 'com.facebook.fresco:webpsupport:1.+'
+
+
     implementation project(':react-native-fs')
     implementation project(':react-native-svg')
     implementation project(':react-native-vector-icons')

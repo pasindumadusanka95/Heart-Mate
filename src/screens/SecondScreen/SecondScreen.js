@@ -108,7 +108,8 @@ export default class SecondScreen extends Component{
     console.log(bardata)
     barData.shift()
     let n = bardata.length-1
-    bardata = bardata.slice(n-7,n)
+    bardata = bardata.slice(n-6,n+3)
+    let temp = []
     for(let i=0;i<bardata.length;i++){
       let abnorml = parseFloat(bardata[i][4].slice(1,6))
       if(i==bardata.length-1){
@@ -118,6 +119,9 @@ export default class SecondScreen extends Component{
       }
       barData.push(abnorml)
       console.log(abnorml)
+    }
+    if(barData.length>7){
+      barData.shift()
     }
   }
 
