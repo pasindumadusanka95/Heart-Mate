@@ -12,6 +12,7 @@ import Svg, {
   Text,
   Line,
 } from 'react-native-svg';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -74,19 +75,36 @@ export default class SecondScreen extends Component{
 
   handleJSON(data2){
     console.log("In handle JSON")
-    let classOfAudio = data2['class']
-    let precentage = data2['precentage']
+    let classOfAudio = data2[0]['class']
+    let precentage = data2[0]['precentage']
 
     let precentageArr = JSON.parse(precentage)
     
     console.log(precentageArr)
+    console.log(data2[1])
+    this.getHistory(data2[1])
     return [classOfAudio, precentageArr]
+  }
+
+  getHistory(data){
+    //let hist = data.split(',')
+    console.log(typeof data)
+    let n=0
+    // console.log(data.length)
+    // console.log(data)
+    // for(let i=0;i<data.length;i++){
+    //   // while(data.charAt(i)!='\n'){
+    //   //   console.log(data[i])
+    //   // }
+    //   console.log("End line")
+    // }
+    //console.log(hist)
   }
 
   render(){
     const { navigation } = this.props; 
-    const dataJson = navigation.getParam('data', {class: "None",precentage: "[10,90]"});
-    pieDatas = this.handleJSON((dataJson))
+    const dataJson = navigation.getParam('data', [{class: "None",precentage: "[10,90]"}, "234,45,67"]);
+    pieDatas = this.handleJSON(dataJson)
 
     const data = [
       {

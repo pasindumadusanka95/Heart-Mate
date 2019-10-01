@@ -32,10 +32,10 @@ export default class HomeScreen extends Component {
   }
 
   writeData= async (newData) =>{
-    let oldText = String(this.readData())
+    let dateTime = this.getDate()
     let classofaudio = newData['class']
     let precentage = newData['precentage']
-    let newText = "\n"+classofaudio+precentage
+    let newText = "\n"+dateTime+","+classofaudio+","+precentage
     RNFS.appendFile(path, newText, 'utf8')
     .then((success) => {
       console.log(path)
@@ -50,8 +50,8 @@ export default class HomeScreen extends Component {
 
   readData= async () =>{
     RNFS.readFile(path, 'ascii').then(res => {
-      console.log(res)
-      return res
+      console.log(String(res))
+      return String(res)
     })
     .catch(err => {
       console.log(err.message, err.code);
@@ -89,6 +89,14 @@ export default class HomeScreen extends Component {
       // do something with audio chunk
     });
     }
+
+  getDate(){
+    let today = new Date();
+    let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    let dateTime = date+','+time;
+    return dateTime
+  }
 
   checkPermission = async () => {
       const p = await Permissions.check('microphone');
@@ -161,7 +169,14 @@ export default class HomeScreen extends Component {
         })
         .catch((error) => {
           console.log(error);
-    
+          Alert.alert(
+            error.type,
+            error.message,
+            [
+              {text: 'OK', onPress: () => console.log('OK Pressed')},
+            ],
+            {cancelable: false},
+          );
         })  
     
     }
@@ -191,7 +206,8 @@ export default class HomeScreen extends Component {
       result: json
     })
     this.writeData(json)
-    this.props.navigation.navigate('result', { data: json })
+    let res = this.readData()
+    this.props.navigation.navigate('result', { data: [json, res]})
   }
 
   stop = async () => {
