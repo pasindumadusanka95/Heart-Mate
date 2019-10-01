@@ -206,8 +206,7 @@ export default class HomeScreen extends Component {
       result: json
     })
     this.writeData(json)
-    let res = this.readData()
-    this.props.navigation.navigate('result', { data: [json, res]})
+    this.props.navigation.navigate('result', { data: json})
   }
 
   stop = async () => {
@@ -271,6 +270,7 @@ export default class HomeScreen extends Component {
     const { navigate } = this.props.navigation; 
     return (
       <View style={styles.container}>
+        <Text style={styles.welcome}>Please plug your microphone and start recording...</Text>
         {this.state.started ? (
           <TouchableOpacity 
             activeOpacity={0.5} 
@@ -368,7 +368,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
-    marginTop: 40
+    
   },
   playImage: {
     width: 20,

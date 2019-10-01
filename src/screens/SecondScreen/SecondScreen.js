@@ -12,6 +12,12 @@ import Svg, {
   Text,
   Line,
 } from 'react-native-svg';
+import {Text as MyText} from 'react-native'
+const userid="Joe1234"
+var RNFS = require('react-native-fs');
+var path = RNFS.DocumentDirectoryPath + '/'+userid+'.txt';
+
+let barData = [0]
 
 const styles = StyleSheet.create({
   container: {
@@ -31,14 +37,14 @@ const styles = StyleSheet.create({
   },
   chart: {
     marginTop: 5,
-    height: 350,
-    width: 350,
-    marginBottom: 10
+    height: 320,
+    width: 320,
+    marginBottom: 15
   },
   bottom: {
     flex: 1,
     justifyContent: 'flex-start',
-    marginTop: 36
+    marginTop: 5
   },
   chartContainer: {
     justifyContent: 'center', 
@@ -46,7 +52,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const  pieDats = []
+let  lastRec = "[50,50]"
 
 export default class SecondScreen extends Component{
   constructor(props) {
@@ -55,7 +61,7 @@ export default class SecondScreen extends Component{
       selectedSlice: {
         label: '',
         value: 0,
-        precentageArr: [27,63]
+        precentageArr: [27,63],
       },
       labelWidth: 0
     }
@@ -73,22 +79,63 @@ export default class SecondScreen extends Component{
 
   }
 
+  readData= async () =>{
+    RNFS.readFile(path, 'ascii').then(res => {
+      console.log(res)
+      let arr = []
+      let str = ""
+      for(let i=0;i<res.length;i++){
+        if(res[i]!='\n'){
+          str = str.concat(res[i])
+        }else if(res[i]=='\n'){ 
+          arr.push(str.split(','))
+          
+          str = ""
+        }
+      }
+      arr.shift()
+      console.log(arr)
+      this.getPrecentages(arr)
+      console.log(barData)
+      return arr
+    })
+    .catch(err => {
+      console.log(err.message, err.code);
+    });
+  }
+
+  getPrecentages(bardata){
+    console.log(bardata)
+    barData.shift()
+    let n = bardata.length-1
+    bardata = bardata.slice(n-7,n)
+    for(let i=0;i<bardata.length;i++){
+      let abnorml = parseFloat(bardata[i][4].slice(1,6))
+      if(i==bardata.length-1){
+        let normal = parseFloat(bardata[i][3].slice(1,6))
+        lastRec = JSON.stringify([normal, abnorml])
+        console.log(lastRec)
+      }
+      barData.push(abnorml)
+      console.log(abnorml)
+    }
+  }
+
   handleJSON(data2){
     console.log("In handle JSON")
-    let classOfAudio = data2[0]['class']
-    let precentage = data2[0]['precentage']
+    let classOfAudio = data2['class']
+    let precentage = data2['precentage']
 
     let precentageArr = JSON.parse(precentage)
+    let arr = this.readData()
     
     console.log(precentageArr)
-    console.log(data2[1])
-    this.getHistory(data2[1])
     return [classOfAudio, precentageArr]
   }
 
   getHistory(data){
     //let hist = data.split(',')
-    console.log(typeof data)
+    console.log(data)
     let n=0
     // console.log(data.length)
     // console.log(data)
@@ -103,7 +150,7 @@ export default class SecondScreen extends Component{
 
   render(){
     const { navigation } = this.props; 
-    const dataJson = navigation.getParam('data', [{class: "None",precentage: "[10,90]"}, "234,45,67"]);
+    const dataJson = navigation.getParam('data', {class: "None",precentage: lastRec});
     pieDatas = this.handleJSON(dataJson)
 
     const data = [
@@ -117,7 +164,7 @@ export default class SecondScreen extends Component{
           amount: pieDatas[1][1],
           svg: { fill: '#ca0b00', onPress: () => this.popInfo(pieDatas[1][1]) }
       },
-  ]
+    ]
 
     const Labels = ({ slices, height, width }) => {
       return slices.map((slice, index) => {
@@ -141,6 +188,7 @@ export default class SecondScreen extends Component{
     }
     return (
       <View style={styles.container}>
+        <MyText style={styles.welcome}>Last Record</MyText>
         <View style={styles.bottom}>
           <PieChart
             style={styles.chart}
@@ -152,8 +200,9 @@ export default class SecondScreen extends Component{
             <Labels/>
           </PieChart>
         </View>
+        <MyText style={styles.welcome}>Last 7 Predictions</MyText>
         <View>
-          <BarChart style={styles.chart} data={[23,45,67,2,5,67]} svg={{ fill: '#9900cc' }} contentInset={{ top: 30, bottom: 30 }}>
+          <BarChart style={styles.chart} data={barData} svg={{ fill: '#9900cc' }} contentInset={{ top: 30, bottom: 30 }}>
           </BarChart>
         </View>
       </View>
@@ -164,8 +213,6 @@ export default class SecondScreen extends Component{
 
 SecondScreen.navigationOptions = {
   tabBarLabel:'Result',  
-  title: 'Result',
-  headerTitle: "hello",
   tabBarIcon: ({ tintColor }) => (  
       <View>  
           <Icon style={[{color: tintColor}]} size={25} name={'ios-heart'}/>  
