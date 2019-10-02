@@ -4,20 +4,25 @@ import {
   Text,
   Image,
   View,
+  ScrollView,
   TouchableOpacity
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+const userid="Joe1234"
+var RNFS = require('react-native-fs');
+var path = RNFS.DocumentDirectoryPath + '/'+userid+'.txt';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
   text: {
     color: '#4f603c',
     textAlign: 'left', alignSelf: 'stretch',
     fontSize: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
  },
   tabIcon: {
     width: 16,
@@ -32,13 +37,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     marginTop: 5,
-    width: 380
+    width: "100%"
   },
   listItem: {
     borderColor: "green",
     borderWidth: 1,
     margin: 5,
-    padding: 10
+    padding: 10,
   }
 });
 
@@ -62,15 +67,56 @@ class ThirdScreen extends Component{
           name: 'Mary',
        }
     ]
- }
+  }
 
+  componentDidMount(){
+    this.readData()
+  }
+
+  generateList(arr){
+    objArr = []
+    for(let i=0;i<arr.length;i++){
+      objArr.push({id: i,name: arr[i]})
+    }
+    this.setState({
+      names: objArr
+    })
+    console.log(objArr)
+  }
+
+  readData= async () =>{
+    RNFS.readFile(path, 'ascii').then(res => {
+      console.log(res)
+      let arr = []
+      let str = ""
+      for(let i=0;i<res.length;i++){
+        if(res[i]!='\n'){
+          str = str.concat(res[i])
+        }else if(res[i]=='\n'){ 
+          arr.push(str)
+          
+          str = ""
+        }
+      }
+      arr.shift()
+      console.log(arr)
+      this.setState({
+        arr: arr
+      })
+      this.generateList(arr)
+      return arr
+    })
+    .catch(err => {
+      console.log(err.message, err.code);
+    });
+  }
   alertItemName = (item) => {
     alert(item.name)
   }
 
   render(){
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <Text style={styles.welcome}>Last Recordings</Text>
         <View style={styles.top}>
           {
@@ -86,7 +132,7 @@ class ThirdScreen extends Component{
             ))
           }
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }
