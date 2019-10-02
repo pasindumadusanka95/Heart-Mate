@@ -23,6 +23,10 @@ const styles = StyleSheet.create({
     fontSize: 15,
     justifyContent: 'center',
     alignItems: 'center',
+    width: "90%"
+ },
+ icon: {
+  
  },
   tabIcon: {
     width: 16,
@@ -44,6 +48,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     margin: 5,
     padding: 10,
+    borderRadius: 10,
+    flexDirection:'row', flexWrap:'wrap'
   }
 });
 
@@ -52,20 +58,8 @@ class ThirdScreen extends Component{
     names: [
        {
           id: 0,
-          name: 'Ben',
+          name: '',
        },
-       {
-          id: 1,
-          name: 'Susan',
-       },
-       {
-          id: 2,
-          name: 'Robert',
-       },
-       {
-          id: 3,
-          name: 'Mary',
-       }
     ]
   }
 
@@ -128,6 +122,9 @@ class ThirdScreen extends Component{
                   <Text style = {styles.text}>
                     {item.name}
                   </Text>
+                  <View style={styles.icon}>  
+                    <Icon style={[{color: "red"}]} size={25} name={'ios-heart'}/>  
+                  </View>
               </TouchableOpacity>
             ))
           }

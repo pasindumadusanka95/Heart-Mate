@@ -22,8 +22,6 @@ let barData = [0]
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
   welcome: {
@@ -35,20 +33,23 @@ const styles = StyleSheet.create({
     width: 16,
     height: 16,
   },
-  chart: {
+  piechart: {
     marginTop: 5,
-    height: 320,
-    width: 320,
+    height: 350,
+    width: "100%",
     marginBottom: 15
   },
+  barchart: {
+    margin: 10,
+    height: 300,
+    width: "90%",
+  },
   bottom: {
-    flex: 1,
     justifyContent: 'flex-start',
     marginTop: 5
   },
   chartContainer: {
-    justifyContent: 'center', 
-    flex: 1
+    
   }
 });
 
@@ -108,7 +109,7 @@ export default class SecondScreen extends Component{
     console.log(bardata)
     barData.shift()
     let n = bardata.length-1
-    bardata = bardata.slice(n-6,n+3)
+    bardata = bardata.slice(n-8,n+3)
     let temp = []
     for(let i=0;i<bardata.length;i++){
       let abnorml = parseFloat(bardata[i][4].slice(1,6))
@@ -195,7 +196,7 @@ export default class SecondScreen extends Component{
         <MyText style={styles.welcome}>Last Record</MyText>
         <View style={styles.bottom}>
           <PieChart
-            style={styles.chart}
+            style={styles.piechart}
             valueAccessor={({ item }) => item.amount}
             data={data}
             spacing={0}
@@ -206,7 +207,7 @@ export default class SecondScreen extends Component{
         </View>
         <MyText style={styles.welcome}>Last 7 Predictions</MyText>
         <View>
-          <BarChart style={styles.chart} data={barData} svg={{ fill: '#9900cc' }} contentInset={{ top: 30, bottom: 30 }}>
+          <BarChart style={styles.barchart} data={barData} svg={{ fill: '#9900cc' }} contentInset={{ top: 30, bottom: 30 }}>
           </BarChart>
         </View>
       </View>
