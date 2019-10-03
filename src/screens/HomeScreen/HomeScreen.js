@@ -5,6 +5,7 @@ import Sound from 'react-native-sound';
 import AudioRecord from 'react-native-audio-record';
 import { db, storage } from '../../config/firebase';
 import {Alert} from 'react-native';
+import Pending from "../Pending/pending";
 import Frontpage from '../../Animations/frontanimation'
 import {
   StyleSheet,
@@ -31,6 +32,8 @@ export default class HomeScreen extends Component {
       };
     });
   }
+
+
 
 
 
@@ -66,6 +69,7 @@ export default class HomeScreen extends Component {
     state = {
         audioFile: '',
         recording: false,
+        pending:false,
         loaded: false,
         paused: true,
         started: true,
@@ -76,6 +80,7 @@ export default class HomeScreen extends Component {
 
     
   async componentDidMount() {
+      this.setState({pending:false})
     await this.checkPermission();
 
     const options = {
@@ -122,6 +127,7 @@ export default class HomeScreen extends Component {
   };
 
   uploadFiles(currentImage){
+      this.setState({pending:true})
       console.log("sending...")
       const image = currentImage
     
@@ -129,7 +135,6 @@ export default class HomeScreen extends Component {
       const fs = RNFetchBlob.fs
       window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
       window.Blob = Blob
-
       const Fetch = RNFetchBlob.polyfill.Fetch
       // replace built-in fetch
       window.fetch = new Fetch({
@@ -182,8 +187,9 @@ export default class HomeScreen extends Component {
             ],
             {cancelable: false},
           );
-        })  
-    
+        })
+
+    //this.endLoading();
     }
 
 
@@ -200,8 +206,13 @@ export default class HomeScreen extends Component {
         audio: url
       })
   }
+
+  endLoading=()=>{
+      this.setState({pending:false});
+}
   
   getResponse = async () => {
+      //this.endLoading();
     const response = await fetch('https://heart-sound-discrimination.herokuapp.com/predict?user_id='+userid)
     console.log(response)  
     console.log("Waiting for response...")
@@ -212,6 +223,7 @@ export default class HomeScreen extends Component {
       result: json
     })
     this.writeData(json)
+      this.setState({pending:false})
     this.props.navigation.navigate('result', { data: json})
   }
 
@@ -275,37 +287,40 @@ export default class HomeScreen extends Component {
   render() {
     const { navigate } = this.props.navigation; 
     return (
+<View style={styles.page}>
+    {!this.state.pending
+        ?
 
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Please plug your microphone and start recording...</Text>
-        {this.state.started ? (
-          <TouchableOpacity 
-            activeOpacity={0.5} 
-            onPress={this.start} 
-            title="Record" 
-            disabled={this.state.recording}
-            style={styles.recBtn}>
-            <Image
-              source={require('../../../imgs/record.png')}
-              style={styles.image}
-            />
-          </TouchableOpacity>
-          ):(
-          <TouchableOpacity 
-            activeOpacity={0.5} 
-            onPress={this.stop} 
-            title="Stop" 
-            disabled={!this.state.recording}
-            style={styles.recBtn}>
-            <Image
-              source={require('../../../imgs/stop.png')}
-              style={styles.image}
-            />
-          </TouchableOpacity>
-          )
-          }
-        <View style={styles.chartContainer}>
-          {/* <AreaChart
+        <View style={styles.container}>
+            <Text style={styles.welcome}>Please plug your microphone and start recording...</Text>
+            {this.state.started ? (
+                <TouchableOpacity
+                    activeOpacity={0.5}
+                    onPress={this.start}
+                    title="Record"
+                    disabled={this.state.recording}
+                    style={styles.recBtn}>
+                    <Image
+                        source={require('../../../imgs/record.png')}
+                        style={styles.image}
+                    />
+                </TouchableOpacity>
+            ) : (
+                <TouchableOpacity
+                    activeOpacity={0.5}
+                    onPress={this.stop}
+                    title="Stop"
+                    disabled={!this.state.recording}
+                    style={styles.recBtn}>
+                    <Image
+                        source={require('../../../imgs/stop.png')}
+                        style={styles.image}
+                    />
+                </TouchableOpacity>
+            )
+            }
+            <View style={styles.chartContainer}>
+                {/* <AreaChart
             style={styles.chart}
             data={plotData}
             contentInset={{ top: 30, bottom: 30 }}
@@ -314,8 +329,8 @@ export default class HomeScreen extends Component {
           >
             <Grid /> 
           </AreaChart> */}
-        </View>
-        {/* <View style={styles.player}>
+            </View>
+            {/* <View style={styles.player}>
           <Slider
             step={1}
             maximumValue={100}
@@ -350,12 +365,19 @@ export default class HomeScreen extends Component {
             </TouchableOpacity>
           )}
         </View>        */}
-      </View>
+        </View>
+            :
+            <View>
+                <Pending></Pending>
+            </View>
+            }
+        </View>
 
       
     );
   }
 }
+
 
 const styles = StyleSheet.create({
   container: {
