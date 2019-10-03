@@ -194,7 +194,7 @@ export default class SecondScreen extends Component{
                   stroke={'black'}
                   strokeWidth={0.2}
               >
-                  {data.amount}
+                  {data.amount+"%"}
               </Text>
           )
       })
