@@ -15,30 +15,42 @@ import ReactNativeSettingsPage, {
 } from 'react-native-settings-page';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+  baseText: {
+    fontFamily: 'Cochin',
+  },image: {
+    marginTop: 10,
+    width: 250,
+    height: 250,
+    resizeMode: 'stretch'
   },
-  welcome: {
+  titleText: {
     fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  tabIcon: {
-    width: 16,
-    height: 16,
+    fontWeight: 'bold',
   },
 });
 
+this.state = {
+  titleText: "Bird's Nest",
+  bodyText: 'This is not really a bird nest.'
+};
 const FourthScreen = ()  => {
+  
   return (
+    
     <ReactNativeSettingsPage>
     <SectionRow text='Information'>
     <View style={styles.container}>
-      <Text style={styles.welcome}>
-        THIS IS THE infomation SCREEN!
+    <Image
+          style={styles.image}
+          source={require('../../../imgs/img.jpg')}
+        />
+    <Text style={styles.baseText}>
+        <Text style={styles.titleText} onPress={this.onPressTitle}>
+          Record Duration{'\n'}{'\n'}
+        </Text>
+        <Text numberOfLines={5}>
+          One recording must be at least 3 seconds.
+        </Text>
       </Text>
     </View>
     </SectionRow>
