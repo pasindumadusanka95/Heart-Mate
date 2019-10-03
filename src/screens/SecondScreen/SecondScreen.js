@@ -4,7 +4,8 @@ import {
   Image,
   View,
   Dimensions,
-  Alert
+  Alert,
+  Platform, YellowBox
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { PieChart, BarChart, Grid } from 'react-native-svg-charts'
@@ -20,6 +21,8 @@ import Svg, {
   Line,
 } from 'react-native-svg';
 import {Text as MyText} from 'react-native'
+import { Menu, MenuProvider, MenuOptions, MenuOption, MenuTrigger} from "react-native-popup-menu"
+
 const userid="Joe1234"
 var RNFS = require('react-native-fs');
 var path = RNFS.DocumentDirectoryPath + '/'+userid+'.txt';
@@ -34,7 +37,18 @@ const styles = StyleSheet.create({
   welcome: {
     fontSize: 20,
     textAlign: 'center',
-    margin: 10,
+    margin: 5,
+  },
+  headerText: {
+    fontSize: 15,
+    margin: 5,
+    fontWeight: "bold",
+    color: "grey"
+  },
+  menuContent: {
+    color: "#000",
+    padding: 2,
+    fontSize: 15
   },
   tabIcon: {
     width: 16,
@@ -73,6 +87,18 @@ const styles = StyleSheet.create({
    },
    icon: {
      marginLeft: 2
+   },
+   dropDown: {
+    textAlign: 'left', 
+    alignSelf: 'stretch',
+    justifyContent: 'center',
+    alignItems: 'center',
+   },
+   dropDownRow: {
+    flexDirection:'row', 
+    flexWrap:'wrap',
+    justifyContent: 'center',
+    alignItems: 'center',
    }
 });
 
@@ -81,6 +107,9 @@ let  lastRec = "[50,50]"
 export default class SecondScreen extends Component{
   constructor(props) {
     super(props);
+    YellowBox.ignoreWarnings([
+      'Warning: isMounted(...) is deprecated', 'Module RCTImageLoader'
+    ]);
     this.state = {
       selectedSlice: {
         label: '',
@@ -190,7 +219,7 @@ export default class SecondScreen extends Component{
                   fill={'white'}
                   textAnchor={'middle'}
                   alignmentBaseline={'middle'}
-                  fontSize={24}
+                  fontSize={22}
                   stroke={'black'}
                   strokeWidth={0.2}
               >
@@ -231,8 +260,29 @@ export default class SecondScreen extends Component{
             <Labels/>
           </PieChart>
         </View>
-        
-        <MyText style={styles.welcome}>Last 7 Predictions</MyText>
+        <View style={styles.dropDownRow}>
+          <MyText style={styles.welcome}>Last 8 Predictions</MyText>
+          <View style={styles.dropDown}>
+            <MenuProvider style={{ flexDirection: "column", padding: 20 }}>
+              <Menu onSelect={value => alert(`You Clicked : ${value}`)}>
+
+                <MenuTrigger  >
+                <MyText style={styles.headerText}>Select</MyText>
+                </MenuTrigger  >
+
+                <MenuOptions>
+                  <MenuOption value={"abnormal"}>
+                    <MyText style={styles.menuContent}>Abnormal</MyText>
+                  </MenuOption>
+                  <MenuOption value={"normal"}>
+                    <Text style={styles.menuContent}>Normal</Text>
+                  </MenuOption>
+                </MenuOptions>
+
+              </Menu>
+            </MenuProvider>
+          </View>
+        </View>
         <View style={styles.bottom}>
           <BarChart style={styles.barchart} data={barData} svg={{ fill: '#9900cc' }} contentInset={{ top: 5, bottom: 5}}>
           </BarChart>
