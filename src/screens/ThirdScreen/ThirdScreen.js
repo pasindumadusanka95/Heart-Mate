@@ -100,9 +100,11 @@ class ThirdScreen extends Component{
       let date = temp[0]
       let time = temp[1]
       let classs = temp[2]
-      let nrm = temp[3].slice(1,6)
-      let abnrm = temp[4].slice(1,6)
-      objArr.push({id: i,date: date, time: time,classs: classs, precent: abnrm+"%"})
+      let nrm = temp[3].slice(1,temp[3].length-1)
+      let abnrm = temp[4].slice(1,temp[4].length-1)
+      precent = classs==="Abnormal"?abnrm:nrm
+      heartColor = classs==="Abnormal"?"red":"green"
+      objArr.push({id: i,date: date, time: time,classs: classs, precent: precent+"%", color: heartColor})
     }
     this.setState({
       names: objArr
@@ -135,7 +137,7 @@ class ThirdScreen extends Component{
     });
   }
   alertItemName = (item) => {
-    alert(item.name)
+    //alert(item.name)
   }
 
   render(){
@@ -148,9 +150,9 @@ class ThirdScreen extends Component{
               <TouchableOpacity
                   style={styles.listItem}
                   key = {item.id}
-                  onPress = {() => this.alertItemName(item)}>
+                  onPress = {() => this.alertItemName((item.classs+" "+item.precent))}>
                   <View style={styles.icon}>  
-                    <Icon style={[{color: "red"}]} size={50} name={'ios-heart'}/>  
+                    <Icon style={[{color: item.color}]} size={50} name={'ios-heart'}/>  
                   </View>
                   <View>
                     <View style={styles.subText}>
@@ -191,7 +193,7 @@ ThirdScreen.navigationOptions = {
   tabBarIcon: ({ tintColor }) => (  
       <View>  
           <Icon style={[{color: tintColor}]} size={25} name={'ios-time'}/>  
-      </View>),    
+      </View>),  
 };
 
 export default ThirdScreen
