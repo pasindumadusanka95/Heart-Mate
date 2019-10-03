@@ -19,14 +19,31 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#4f603c',
-    textAlign: 'left', alignSelf: 'stretch',
+    textAlign: 'left', 
+    alignSelf: 'stretch',
     fontSize: 15,
     justifyContent: 'center',
     alignItems: 'center',
-    width: "90%"
+    marginLeft: 3,
+    marginRight: 3
+ },
+ lower: {
+  color: '#4f603c',
+  textAlign: 'left', 
+  alignSelf: 'stretch',
+  fontSize: 15,
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginLeft: 3,
+  marginRight: 3,
+  width: "80%",
+  fontSize: 25,
+ },
+ subText: {
+  flexDirection:'row', flexWrap:'wrap'
  },
  icon: {
-  
+  margin: 5
  },
   tabIcon: {
     width: 16,
@@ -50,6 +67,15 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     flexDirection:'row', flexWrap:'wrap'
+  },
+  final: {
+    fontSize: 40,
+    width: "100%",
+    margin: 5,
+    textAlign: 'right', 
+    alignSelf: 'stretch',
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 });
 
@@ -70,7 +96,13 @@ class ThirdScreen extends Component{
   generateList(arr){
     objArr = []
     for(let i=0;i<arr.length;i++){
-      objArr.push({id: i,name: arr[i]})
+      let temp = arr[i]
+      let date = temp[0]
+      let time = temp[1]
+      let classs = temp[2]
+      let nrm = temp[3].slice(1,6)
+      let abnrm = temp[4].slice(1,6)
+      objArr.push({id: i,date: date, time: time,classs: classs, precent: abnrm+"%"})
     }
     this.setState({
       names: objArr
@@ -87,16 +119,14 @@ class ThirdScreen extends Component{
         if(res[i]!='\n'){
           str = str.concat(res[i])
         }else if(res[i]=='\n'){ 
-          arr.push(str)
+         
+          arr.push(str.split(','))
           
           str = ""
         }
       }
       arr.shift()
       console.log(arr)
-      this.setState({
-        arr: arr
-      })
       this.generateList(arr)
       return arr
     })
@@ -119,11 +149,33 @@ class ThirdScreen extends Component{
                   style={styles.listItem}
                   key = {item.id}
                   onPress = {() => this.alertItemName(item)}>
-                  <Text style = {styles.text}>
-                    {item.name}
-                  </Text>
                   <View style={styles.icon}>  
-                    <Icon style={[{color: "red"}]} size={25} name={'ios-heart'}/>  
+                    <Icon style={[{color: "red"}]} size={50} name={'ios-heart'}/>  
+                  </View>
+                  <View>
+                    <View style={styles.subText}>
+                      <View>  
+                        <Icon size={20} name={'ios-calendar'}/>  
+                      </View>
+                      <Text style = {styles.text}>
+                        {item.date}
+                      </Text>
+                      <View>  
+                        <Icon size={20} name={'ios-time'}/>  
+                      </View>
+                      <Text style = {styles.text}>
+                        {item.time}
+                      </Text>
+                    </View>
+                    
+                    <Text style = {styles.lower}>
+                      {item.classs}
+                    </Text>
+                  </View>
+                  <View>
+                    <Text style = {styles.final}>
+                      {item.precent}
+                    </Text>
                   </View>
               </TouchableOpacity>
             ))

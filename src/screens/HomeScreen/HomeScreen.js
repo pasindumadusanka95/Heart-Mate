@@ -34,7 +34,6 @@ export default class HomeScreen extends Component {
 
 
   loading(){
-    alert('ssssssssss')
     this.setState({show:true})
   }
 
