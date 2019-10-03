@@ -8,6 +8,13 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { PieChart, BarChart, Grid } from 'react-native-svg-charts'
+import ReactNativeSettingsPage, { 
+	SectionRow, 
+	NavigateRow,
+  CheckRow,
+  SwitchRow, 
+  SliderRow
+} from 'react-native-settings-page';
 import Svg, {
   Text,
   Line,
@@ -192,6 +199,8 @@ export default class SecondScreen extends Component{
       })
     }
     return (
+      <ReactNativeSettingsPage>
+      <SectionRow text='Result'>
       <View style={styles.container}>
         <MyText style={styles.welcome}>Last Record</MyText>
         <View style={styles.bottom}>
@@ -211,6 +220,8 @@ export default class SecondScreen extends Component{
           </BarChart>
         </View>
       </View>
+      </SectionRow>
+  </ReactNativeSettingsPage>
     );
   }
   
