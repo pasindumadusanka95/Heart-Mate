@@ -283,7 +283,7 @@ export default class HomeScreen extends Component {
       <View style={styles.page}>
         {this.state.show ?
       <View style={styles.container}>
-        <Text style={styles.welcome}>Please plug your microphone and start recording...</Text>
+        {/* <Text style={styles.welcome}>Please plug your microphone and start recording...</Text> */}
         {this.state.started ? (
           <TouchableOpacity 
             activeOpacity={0.5} 
