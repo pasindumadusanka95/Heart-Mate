@@ -33,9 +33,7 @@ export default class HomeScreen extends Component {
   }
 
 
-  loading(){
-    this.setState({show:true})
-  }
+
 
   writeData= async (newData) =>{
     let dateTime = this.getDate()
@@ -187,10 +185,7 @@ export default class HomeScreen extends Component {
         })  
     
     }
-    componentWillMount(){
-      setTimeout( () => {this.loading()}, 5000);  
 
-    }
 
   guidGenerator() {
     var S4 = function() {
@@ -280,8 +275,7 @@ export default class HomeScreen extends Component {
   render() {
     const { navigate } = this.props.navigation; 
     return (
-      <View style={styles.page}>
-        {this.state.show ?
+
       <View style={styles.container}>
         <Text style={styles.welcome}>Please plug your microphone and start recording...</Text>
         {this.state.started ? (
@@ -357,13 +351,7 @@ export default class HomeScreen extends Component {
           )}
         </View>        */}
       </View>
-      :
-        <View style={styles.page}>
-<Frontpage></Frontpage>
-      </View>
 
-        }
-        </View>
       
     );
   }
