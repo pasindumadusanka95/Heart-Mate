@@ -14,7 +14,7 @@ import {
   Button,
   TouchableOpacity,
   Image,
-  Slider
+  Slider,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';  
 var RNFetchBlob = require('react-native-fetch-blob').default
@@ -118,6 +118,7 @@ export default class HomeScreen extends Component {
   requestPermission = async () => {
       const p = await Permissions.request('microphone');
       console.log('permission request', p);
+      const p2 = await Permissions.request('vibrate');
   };
 
   start = () => {    
@@ -287,6 +288,7 @@ export default class HomeScreen extends Component {
   render() {
     const { navigate } = this.props.navigation; 
     return (
+
 <View style={styles.page}>
     {!this.state.pending
         ?
@@ -321,6 +323,7 @@ export default class HomeScreen extends Component {
             }
             <View style={styles.chartContainer}>
                 {/* <AreaChart
+
             style={styles.chart}
             data={plotData}
             contentInset={{ top: 30, bottom: 30 }}

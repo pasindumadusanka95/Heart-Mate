@@ -4,7 +4,8 @@ import {
   Image,
   View,
   Dimensions,
-  Alert
+  Alert,
+  Platform, YellowBox
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { PieChart, BarChart, Grid } from 'react-native-svg-charts'
@@ -20,6 +21,8 @@ import Svg, {
   Line,
 } from 'react-native-svg';
 import {Text as MyText} from 'react-native'
+import { Menu, MenuProvider, MenuOptions, MenuOption, MenuTrigger} from "react-native-popup-menu"
+
 const userid="Joe1234"
 var RNFS = require('react-native-fs');
 var path = RNFS.DocumentDirectoryPath + '/'+userid+'.txt';
@@ -34,7 +37,18 @@ const styles = StyleSheet.create({
   welcome: {
     fontSize: 20,
     textAlign: 'center',
-    margin: 10,
+    margin: 5,
+  },
+  headerText: {
+    fontSize: 15,
+    margin: 5,
+    fontWeight: "bold",
+    color: "grey"
+  },
+  menuContent: {
+    color: "#000",
+    padding: 2,
+    fontSize: 15
   },
   tabIcon: {
     width: 16,
@@ -42,22 +56,50 @@ const styles = StyleSheet.create({
   },
   piechart: {
     marginTop: 5,
-    height: 350,
+    height: 300,
     width: "100%",
-    marginBottom: 15
+    marginBottom: 2
   },
   barchart: {
-    margin: 10,
-    height: 300,
-    width: "90%",
+    marginLeft: 5,
+    marginRight: 5,
+    height: 250,
+    width: "100%",
+    padding: 20
   },
-  bottom: {
+  top: {
     justifyContent: 'flex-start',
     marginTop: 5
   },
   chartContainer: {
     
-  }
+  },
+  bottom: {
+    justifyContent: 'flex-end',
+    marginTop: 5
+  },
+  subText: {
+    flexDirection:'row', flexWrap:'wrap',
+    padding: 2
+   },
+   text: {
+     marginLeft: 5
+   },
+   icon: {
+     marginLeft: 2
+   },
+   dropDown: {
+    textAlign: 'left', 
+    alignSelf: 'stretch',
+    justifyContent: 'center',
+    alignItems: 'center',
+   },
+   dropDownRow: {
+    flexDirection:'row', 
+    flexWrap:'wrap',
+    justifyContent: 'center',
+    alignItems: 'center',
+   }
 });
 
 let  lastRec = "[50,50]"
@@ -65,6 +107,9 @@ let  lastRec = "[50,50]"
 export default class SecondScreen extends Component{
   constructor(props) {
     super(props);
+    YellowBox.ignoreWarnings([
+      'Warning: isMounted(...) is deprecated', 'Module RCTImageLoader'
+    ]);
     this.state = {
       selectedSlice: {
         label: '',
@@ -145,21 +190,6 @@ export default class SecondScreen extends Component{
     return [classOfAudio, precentageArr]
   }
 
-  getHistory(data){
-    //let hist = data.split(',')
-    console.log(data)
-    let n=0
-    // console.log(data.length)
-    // console.log(data)
-    // for(let i=0;i<data.length;i++){
-    //   // while(data.charAt(i)!='\n'){
-    //   //   console.log(data[i])
-    //   // }
-    //   console.log("End line")
-    // }
-    //console.log(hist)
-  }
-
   render(){
     const { navigation } = this.props; 
     const dataJson = navigation.getParam('data', {class: "None",precentage: lastRec});
@@ -189,11 +219,11 @@ export default class SecondScreen extends Component{
                   fill={'white'}
                   textAnchor={'middle'}
                   alignmentBaseline={'middle'}
-                  fontSize={24}
+                  fontSize={22}
                   stroke={'black'}
                   strokeWidth={0.2}
               >
-                  {data.amount}
+                  {data.amount+"%"}
               </Text>
           )
       })
@@ -203,7 +233,23 @@ export default class SecondScreen extends Component{
       <SectionRow text='Result'>
       <View style={styles.container}>
         <MyText style={styles.welcome}>Last Record</MyText>
-        <View style={styles.bottom}>
+        <View style={styles.subText}>
+          <View style={styles.icon}>  
+            <Icon style={[{color: "red"}]} size={20} name={'ios-radio-button-off'}/>  
+          </View>
+          <MyText style = {styles.text}>
+            Abnormal
+          </MyText>
+        </View>
+        <View style={styles.subText}>
+          <View style={styles.icon}>  
+            <Icon style={[{color: "green"}]} size={20} name={'ios-radio-button-off'}/>  
+          </View>
+          <MyText style = {styles.text}>
+            Normal
+          </MyText>
+        </View>
+        <View style={styles.top}>
           <PieChart
             style={styles.piechart}
             valueAccessor={({ item }) => item.amount}
@@ -214,9 +260,31 @@ export default class SecondScreen extends Component{
             <Labels/>
           </PieChart>
         </View>
-        <MyText style={styles.welcome}>Last 7 Predictions</MyText>
-        <View>
-          <BarChart style={styles.barchart} data={barData} svg={{ fill: '#9900cc' }} contentInset={{ top: 30, bottom: 30 }}>
+        <View style={styles.dropDownRow}>
+          <MyText style={styles.welcome}>Last 8 Predictions</MyText>
+          <View style={styles.dropDown}>
+            <MenuProvider style={{ flexDirection: "column", padding: 20 }}>
+              <Menu onSelect={value => alert(`You Clicked : ${value}`)}>
+
+                <MenuTrigger  >
+                <MyText style={styles.headerText}>Select</MyText>
+                </MenuTrigger  >
+
+                <MenuOptions>
+                  <MenuOption value={"abnormal"}>
+                    <MyText style={styles.menuContent}>Abnormal</MyText>
+                  </MenuOption>
+                  <MenuOption value={"normal"}>
+                    <Text style={styles.menuContent}>Normal</Text>
+                  </MenuOption>
+                </MenuOptions>
+
+              </Menu>
+            </MenuProvider>
+          </View>
+        </View>
+        <View style={styles.bottom}>
+          <BarChart style={styles.barchart} data={barData} svg={{ fill: '#9900cc' }} contentInset={{ top: 5, bottom: 5}}>
           </BarChart>
         </View>
       </View>
