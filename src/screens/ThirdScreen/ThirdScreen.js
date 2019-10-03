@@ -8,6 +8,13 @@ import {
   TouchableOpacity
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import ReactNativeSettingsPage, { 
+	SectionRow, 
+	NavigateRow,
+  CheckRow,
+  SwitchRow, 
+  SliderRow
+} from 'react-native-settings-page';
 const userid="Joe1234"
 var RNFS = require('react-native-fs');
 var path = RNFS.DocumentDirectoryPath + '/'+userid+'.txt';
@@ -142,6 +149,8 @@ class ThirdScreen extends Component{
 
   render(){
     return (
+      <ReactNativeSettingsPage>
+    <SectionRow text='Records History'>
       <ScrollView style={styles.container}>
         <Text style={styles.welcome}>Last Recordings</Text>
         <View style={styles.top}>
@@ -184,12 +193,14 @@ class ThirdScreen extends Component{
           }
         </View>
       </ScrollView>
+      </SectionRow>
+  </ReactNativeSettingsPage>
     );
   }
 }
 
 ThirdScreen.navigationOptions = {
-  tabBarLabel:'third',  
+  tabBarLabel:'history',  
   tabBarIcon: ({ tintColor }) => (  
       <View>  
           <Icon style={[{color: tintColor}]} size={25} name={'ios-time'}/>  

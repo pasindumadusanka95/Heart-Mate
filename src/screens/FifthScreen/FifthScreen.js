@@ -6,6 +6,14 @@ import {
   View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import ReactNativeSettingsPage, { 
+	SectionRow, 
+	NavigateRow,
+  CheckRow,
+  SwitchRow, 
+  SliderRow
+} from 'react-native-settings-page';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -25,17 +33,46 @@ const styles = StyleSheet.create({
 });
 
 const FifthScreen = ()  => {
+  state = {
+		check: false,
+		switch: false,
+		value: 40
+	}
+	
   return (
-    <View style={styles.container}>
-      <Text style={styles.welcome}>
-        THIS IS THE settings SCREEN!
-      </Text>
-    </View>
+    <ReactNativeSettingsPage>
+    <SectionRow text='Settings'>
+      <NavigateRow
+        text='Default state'
+        iconName='cogs'
+        onPressCallback={this._navigateToScreen} />
+      <SwitchRow 
+        text='Max Record' 
+        iconName='cogs'
+        _value={this.state.switch}
+        _onValueChange={() => { this.setState({ switch: !this.state.switch }) }} />
+      <CheckRow 
+        text='Reset Records'
+        iconName='cogs'
+        _color='#000'
+        _value={this.state.check}
+        _onValueChange={() => { this.setState({ check: !this.state.check }) }} />
+      {/* <SliderRow 
+        text='Slider Row'
+        iconName='your-icon-name'
+        _color='#000'
+        _min={0}
+        _max={100}
+        _value={this.state.value}
+        _onValueChange={value => { this.setState({ value }) }} /> */}
+    </SectionRow>
+  </ReactNativeSettingsPage>
+
   );
 }
 
 FifthScreen.navigationOptions = {
-  tabBarLabel:'fifth',  
+  tabBarLabel:'settings',  
   tabBarIcon: ({ tintColor }) => (  
       <View>  
           <Icon style={[{color: tintColor}]} size={25} name={'ios-settings'}/>  
