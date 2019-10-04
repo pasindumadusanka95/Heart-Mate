@@ -17,15 +17,18 @@ import ReactNativeSettingsPage, {
 const styles = StyleSheet.create({
   baseText: {
     fontFamily: 'Cochin',
+    fontSize: 20
   },image: {
     marginTop: 10,
-    width: 250,
-    height: 250,
-    resizeMode: 'stretch'
+    width: '100%',
+    height: 400,
+    resizeMode: 'stretch',
+    justifyContent : 'center'
   },
   titleText: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
+    color : 'gray'
   },
 });
 
@@ -42,15 +45,23 @@ const FourthScreen = ()  => {
     <View style={styles.container}>
     <Image
           style={styles.image}
-          source={require('../../../imgs/img.jpg')}
+          source={require('../../../imgs/vector_man.png')}
         />
     <Text style={styles.baseText}>
+    <Text style={styles.titleText} onPress={this.onPressTitle}>
+          Device Placement{'\n'}{'\n'}
+        </Text>
+        <Text numberOfLines={5}>
+        {'\t'}  Close to the heart.
+        </Text>
         <Text style={styles.titleText} onPress={this.onPressTitle}>
+        {'\n'}{'\n'}
           Record Duration{'\n'}{'\n'}
         </Text>
         <Text numberOfLines={5}>
-          One recording must be at least 3 seconds.
+        {'\t'}  One recording must be at least 3 seconds.{'\n'}{'\n'}
         </Text>
+       
       </Text>
     </View>
     </SectionRow>
