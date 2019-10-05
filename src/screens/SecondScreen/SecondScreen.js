@@ -264,14 +264,14 @@ export default class SecondScreen extends Component{
           <MyText style={styles.welcome}>Last 8 Predictions</MyText>
           <View style={styles.dropDown}>
             <MenuProvider style={{ flexDirection: "column", padding: 20 }}>
-              <Menu onSelect={value => alert(`You Clicked : ${value}`)}>
+              <Menu onSelect={value => alert(`Display ${value} predictions`)}>
 
                 <MenuTrigger  >
                 <MyText style={styles.headerText}>Abnormal</MyText>
                 </MenuTrigger  >
 
                 <MenuOptions>
-                  <MenuOption value={"abnormal"}>
+                  <MenuOption value={"Normal"}>
                     <MyText style={styles.menuContent}>Normal</MyText>
                   </MenuOption>
                   <MenuOption value={"normal"}>

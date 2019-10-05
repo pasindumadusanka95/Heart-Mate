@@ -73,9 +73,8 @@ class FifthScreen extends Component {
       <ReactNativeSettingsPage>
       <SectionRow text='Settings'>
         <NavigateRow
-          text='Default state'
-          iconName='cogs'
-          onPressCallback={this._navigateToScreen} />
+          text='Export to CSV'
+          iconName='cogs'/>
         <SwitchRow 
           text='Max Record' 
           iconName='cogs'

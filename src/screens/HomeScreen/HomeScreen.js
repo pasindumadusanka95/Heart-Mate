@@ -349,7 +349,7 @@ export default class HomeScreen extends Component {
                   disabled={!this.state.audioFile}
                 >
                   <View>  
-                      <Icon size={25} name={'ios-play'}/>  
+                      <Icon style={[{color: 'white'}]} size={25} name={'ios-play'}/>  
                   </View>
                 </TouchableOpacity>
                 ) : (
@@ -360,7 +360,7 @@ export default class HomeScreen extends Component {
                     disabled={!this.state.audioFile}
                   >
                     <View>  
-                      <Icon size={25} name={'ios-pause'}/>  
+                      <Icon style={[{color: 'white'}]} size={25} name={'ios-pause'}/>  
                     </View>
                   </TouchableOpacity>
                 )}
@@ -415,17 +415,17 @@ const styles = StyleSheet.create({
     width: 200
   },
   slider: {
-    width: 220, height: 30, borderRadius: 50,
-    borderWidth: 1
+    width: "80%"
   },
   player: {
     flexDirection:'row', 
     flexWrap:'wrap',
     justifyContent: 'center',
     alignItems: 'center',
-    width: "60%", height: 30, borderRadius: 50,
+    width: "52%", height: 30, borderRadius: 50,
     borderWidth: 1,
     marginTop: 40,
+    backgroundColor: '#696969'
   },
 });
 
