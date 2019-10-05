@@ -315,21 +315,17 @@ export default class HomeScreen extends Component {
                     />
                 </TouchableOpacity>
             ) : (
-              <View>
-                <TouchableOpacity
-                  activeOpacity={0.5}
-                  onPress={this.stop}
-                  title="Stop"
-                  disabled={!this.state.recording}
-                  style={styles.recBtn}>
-                  <Image
-                      source={require('../../../imgs/stop.png')}
-                      style={styles.image}
-                  />
-                </TouchableOpacity>
-                <DotIndicator style={{margin: 0}} color='black' />
-              </View>
-                
+              <TouchableOpacity
+                activeOpacity={0.5}
+                onPress={this.stop}
+                title="Stop"
+                disabled={!this.state.recording}
+                style={styles.recBtn}>
+                <Image
+                    source={require('../../../imgs/stop.png')}
+                    style={styles.image}
+                />
+              </TouchableOpacity>  
             )
             }
             <View style={styles.player}>
