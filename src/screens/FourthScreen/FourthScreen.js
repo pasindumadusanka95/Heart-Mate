@@ -6,36 +6,50 @@ import {
   View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import ReactNativeSettingsPage, { 
+	SectionRow, 
+	NavigateRow,
+  CheckRow,
+  SwitchRow, 
+  SliderRow
+} from 'react-native-settings-page';
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+  baseText: {
+    fontFamily: 'Cochin',
+    fontSize: 20
+  },image: {
+    marginTop: 10,
+    width: '100%',
+    height: 400,
+    resizeMode: 'stretch',
+    justifyContent : 'center'
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  tabIcon: {
-    width: 16,
-    height: 16,
+  titleText: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color : 'gray'
   },
 });
 
+this.state = {
+  titleText: "Bird's Nest",
+  bodyText: 'This is not really a bird nest.'
+};
 const FourthScreen = ()  => {
+  
   return (
-    <View style={styles.container}>
-      <Text style={styles.welcome}>
-        THIS IS THE infomation SCREEN!
-      </Text>
-    </View>
+    
+    <ReactNativeSettingsPage>
+    <SectionRow text='Information'>
+      
+    </SectionRow> 
+  </ReactNativeSettingsPage>
   );
 }
 
 FourthScreen.navigationOptions = {
-  tabBarLabel:'fourth',  
+  tabBarLabel:'info',  
   tabBarIcon: ({ tintColor }) => (  
       <View>  
           <Icon style={[{color: tintColor}]} size={25} name={'ios-information-circle'}/>  

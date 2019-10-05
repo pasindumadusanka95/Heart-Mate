@@ -9,7 +9,7 @@ import { createMaterialBottomTabNavigator } from 'react-navigation-material-bott
 
 const TabNavigator = createMaterialBottomTabNavigator(  
     {
-      info: { screen: FourthScreen },
+      play: { screen: FourthScreen },
       History: { screen: ThirdScreen },
       record: { screen: HomeScreen },
       result: { screen: SecondScreen },
