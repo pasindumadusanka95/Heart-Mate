@@ -219,7 +219,7 @@ export default class SecondScreen extends Component{
                   fill={'white'}
                   textAnchor={'middle'}
                   alignmentBaseline={'middle'}
-                  fontSize={22}
+                  fontSize={20}
                   stroke={'black'}
                   strokeWidth={0.2}
               >
@@ -235,7 +235,7 @@ export default class SecondScreen extends Component{
         <MyText style={styles.welcome}>Last Record</MyText>
         <View style={styles.subText}>
           <View style={styles.icon}>  
-            <Icon style={[{color: "red"}]} size={20} name={'ios-radio-button-off'}/>  
+            <Icon style={[{color: "red"}]} size={20} name={'ios-radio-button-on'}/>  
           </View>
           <MyText style = {styles.text}>
             Abnormal
@@ -243,7 +243,7 @@ export default class SecondScreen extends Component{
         </View>
         <View style={styles.subText}>
           <View style={styles.icon}>  
-            <Icon style={[{color: "green"}]} size={20} name={'ios-radio-button-off'}/>  
+            <Icon style={[{color: "green"}]} size={20} name={'ios-radio-button-on'}/>  
           </View>
           <MyText style = {styles.text}>
             Normal
@@ -267,15 +267,15 @@ export default class SecondScreen extends Component{
               <Menu onSelect={value => alert(`You Clicked : ${value}`)}>
 
                 <MenuTrigger  >
-                <MyText style={styles.headerText}>Select</MyText>
+                <MyText style={styles.headerText}>Abnormal</MyText>
                 </MenuTrigger  >
 
                 <MenuOptions>
                   <MenuOption value={"abnormal"}>
-                    <MyText style={styles.menuContent}>Abnormal</MyText>
+                    <MyText style={styles.menuContent}>Normal</MyText>
                   </MenuOption>
                   <MenuOption value={"normal"}>
-                    <Text style={styles.menuContent}>Normal</Text>
+                    <Text style={styles.menuContent}></Text>
                   </MenuOption>
                 </MenuOptions>
 
@@ -284,7 +284,7 @@ export default class SecondScreen extends Component{
           </View>
         </View>
         <View style={styles.bottom}>
-          <BarChart style={styles.barchart} data={barData} svg={{ fill: '#9900cc' }} contentInset={{ top: 5, bottom: 5}}>
+          <BarChart style={styles.barchart} data={barData} svg={{ fill: '#ca0b00' }} contentInset={{ top: 5, bottom: 5}}>
           </BarChart>
         </View>
       </View>

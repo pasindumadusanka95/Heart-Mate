@@ -22,14 +22,13 @@ export default class Pending extends React.Component {
     render() {
         return (
             <View style={styles.page}>
-
-
-
-                <DotIndicator color='black' />
-                    <Text style={{color: 'red',fontSize:18}}>
-                        {"\n\n"} Please Wait for your result{"\n\n"}
+                <View style={styles.row}>
+                    <Text style={styles.welcome}>
+                        Please Wait 
                     </Text>
-                <DotIndicator color='black' />
+                    <DotIndicator color='black' />
+                </View>
+                
             </View>
         );
     }
@@ -38,6 +37,17 @@ export default class Pending extends React.Component {
 const styles = StyleSheet.create({
     page:{
         flex:1,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        alignItems: 'center'
     },
+    welcome: {
+        fontSize: 30,
+        textAlign: 'center',
+        margin: 10,
+        
+      },
+      row: {
+        justifyContent: 'center',
+        alignItems: 'center'
+      }
 })

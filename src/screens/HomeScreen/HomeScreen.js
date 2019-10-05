@@ -6,12 +6,21 @@ import AudioRecord from 'react-native-audio-record';
 import { db, storage } from '../../config/firebase';
 import {Alert} from 'react-native';
 import Pending from "../Pending/pending";
-import Frontpage from '../../Animations/frontanimation'
+import {
+  BallIndicator,
+  BarIndicator,
+  DotIndicator,
+  MaterialIndicator,
+  PacmanIndicator,
+  PulseIndicator,
+  SkypeIndicator,
+  UIActivityIndicator,
+  WaveIndicator,
+} from 'react-native-indicators';
 import {
   StyleSheet,
   Text,
   View,
-  Button,
   TouchableOpacity,
   Image,
   Slider,
@@ -74,7 +83,7 @@ export default class HomeScreen extends Component {
         paused: true,
         started: true,
         show:false,
-        valueSlider: 50,
+        valueSlider: 0,
         plotData: [50, 10, 40, 95, -4, -24, null, 85, undefined, 0, 35, 53, -53, 24, 50, -20, -80],
     };
 
@@ -288,13 +297,11 @@ export default class HomeScreen extends Component {
   render() {
     const { navigate } = this.props.navigation; 
     return (
-
-<View style={styles.page}>
-    {!this.state.pending
-        ?
-
+      <View style={styles.page}>
+          {!this.state.pending
+              ?
         <View style={styles.container}>
-            <Text style={styles.welcome}>Please plug your microphone and start recording...</Text>
+            <Text style={styles.welcome}>Start recording </Text>
             {this.state.started ? (
                 <TouchableOpacity
                     activeOpacity={0.5}
@@ -308,75 +315,63 @@ export default class HomeScreen extends Component {
                     />
                 </TouchableOpacity>
             ) : (
+              <View>
                 <TouchableOpacity
-                    activeOpacity={0.5}
-                    onPress={this.stop}
-                    title="Stop"
-                    disabled={!this.state.recording}
-                    style={styles.recBtn}>
-                    <Image
-                        source={require('../../../imgs/stop.png')}
-                        style={styles.image}
-                    />
+                  activeOpacity={0.5}
+                  onPress={this.stop}
+                  title="Stop"
+                  disabled={!this.state.recording}
+                  style={styles.recBtn}>
+                  <Image
+                      source={require('../../../imgs/stop.png')}
+                      style={styles.image}
+                  />
                 </TouchableOpacity>
+                <DotIndicator style={{margin: 0}} color='black' />
+              </View>
+                
             )
             }
-            <View style={styles.chartContainer}>
-                {/* <AreaChart
-
-            style={styles.chart}
-            data={plotData}
-            contentInset={{ top: 30, bottom: 30 }}
-            curve={shape.curveNatural}
-            svg={{ stroke: 'rgb(134, 65, 244)' }}
-          >
-            <Grid /> 
-          </AreaChart> */}
+            <View style={styles.player}>
+              <Slider
+                step={1}
+                maximumValue={100}
+                onValueChange={this.change.bind(this)}
+                value={this.state.valueSlider}
+                style={styles.slider}
+              />
+            
+              {this.state.paused ? (
+                <TouchableOpacity 
+                  activeOpacity={0.5} 
+                  onPress={this.play} 
+                  title="Play" 
+                  disabled={!this.state.audioFile}
+                >
+                  <View>  
+                      <Icon size={25} name={'ios-play'}/>  
+                  </View>
+                </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity 
+                    activeOpacity={0.5} 
+                    onPress={this.pause} 
+                    title="Pause" 
+                    disabled={!this.state.audioFile}
+                  >
+                    <View>  
+                      <Icon size={25} name={'ios-pause'}/>  
+                    </View>
+                  </TouchableOpacity>
+                )}
+              </View>       
             </View>
-            {/* <View style={styles.player}>
-          <Slider
-            step={1}
-            maximumValue={100}
-            onValueChange={this.change.bind(this)}
-            value={valueSlider}
-            style={styles.slider}
-          />
-          
-          {this.state.paused ? (
-            <TouchableOpacity 
-              activeOpacity={0.5} 
-              onPress={this.play} 
-              title="Play" 
-              disabled={!this.state.audioFile}
-            >
-              <Image
-                source={require('../../../imgs/play.png')}
-                style={styles.playImage}
-              />
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity 
-              activeOpacity={0.5} 
-              onPress={this.pause} 
-              title="Pause" 
-              disabled={!this.state.audioFile}
-            >
-              <Image
-                source={require('../../../imgs/pause.png')}
-                style={styles.playImage}
-              />
-            </TouchableOpacity>
-          )}
-        </View>        */}
-        </View>
             :
             <View>
                 <Pending></Pending>
             </View>
             }
         </View>
-
-      
     );
   }
 }
@@ -406,6 +401,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
+    justifyContent: 'flex-start'
     
   },
   playImage: {
@@ -419,15 +415,17 @@ const styles = StyleSheet.create({
     width: 200
   },
   slider: {
-    marginTop: 40,
-    width: 300,
-
+    width: 220, height: 30, borderRadius: 50,
+    borderWidth: 1
   },
   player: {
     flexDirection:'row', 
     flexWrap:'wrap',
     justifyContent: 'center',
     alignItems: 'center',
+    width: "60%", height: 30, borderRadius: 50,
+    borderWidth: 1,
+    marginTop: 40,
   },
 });
 
