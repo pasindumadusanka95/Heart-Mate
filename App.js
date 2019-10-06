@@ -7,7 +7,8 @@ export default class App extends React.Component {
   constructor(){
     super();
     this.state={
-      show:false
+      show:false,
+        pending:true
     }
 
   }
@@ -22,8 +23,12 @@ export default class App extends React.Component {
     return (
         <View style={styles.page}>
           {this.state.show ?
-              <View style={styles.page}>
-                <Navigator/>
+              <View style={styles.page} >
+                  {this.state.pending ?
+                      <Navigator/>
+                      :
+                      <View></View>
+                  }
               </View>
 
               :
