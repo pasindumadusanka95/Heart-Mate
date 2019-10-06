@@ -9,7 +9,7 @@ class Frontpage extends Component {
     render() { 
         return (
             <Image 
-            source={require('../resources/heartbeat.gif')}  
+            source={require('../resources/heartbeat1.gif')}
             style={{width: '100%', height: '100%' }}
             
         />
