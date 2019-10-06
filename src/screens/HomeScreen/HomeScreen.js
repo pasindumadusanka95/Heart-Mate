@@ -96,7 +96,6 @@ export default class HomeScreen extends Component {
         sampleRate: 44100,
         channels: 2,
         bitsPerSample: 16,
-        audioSource: 9,
         wavFile: 'test.wav'
     };
 
