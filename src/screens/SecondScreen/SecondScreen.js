@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   welcome: {
     fontSize: 20,
-    textAlign: 'center',
+    textAlign: 'left',
     margin: 5,
   },
   headerText: {
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   barchart: {
     marginLeft: 5,
     marginRight: 5,
-    height: 250,
+    height: 300,
     width: "100%",
     padding: 20
   },
@@ -232,7 +232,7 @@ export default class SecondScreen extends Component{
       <ReactNativeSettingsPage>
       <SectionRow text='Result'>
       <View style={styles.container}>
-        <MyText style={styles.welcome}>Last Record</MyText>
+        {/* <MyText style={styles.welcome}>Last Record</MyText> */}
         <View style={styles.subText}>
           <View style={styles.icon}>  
             <Icon style={[{color: "red"}]} size={20} name={'ios-radio-button-on'}/>  

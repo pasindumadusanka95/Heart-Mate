@@ -152,7 +152,7 @@ class ThirdScreen extends Component{
       <ReactNativeSettingsPage>
     <SectionRow text='Records History'>
       <ScrollView style={styles.container}>
-        <Text style={styles.welcome}>Last Recordings</Text>
+        {/* <Text style={styles.welcome}>Last Recordings</Text> */}
         <View style={styles.top}>
           {
             this.state.names.map((item, index) => (

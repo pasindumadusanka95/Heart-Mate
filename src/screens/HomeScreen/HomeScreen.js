@@ -232,7 +232,7 @@ export default class HomeScreen extends Component {
       result: json
     })
     this.writeData(json)
-      this.setState({pending:false})
+    this.setState({pending:false})
     this.props.navigation.navigate('result', { data: json})
   }
 
@@ -297,14 +297,16 @@ export default class HomeScreen extends Component {
     const { navigate } = this.props.navigation; 
     return (
       <View style={styles.page}>
+        {!this.state.pending?<Text style={styles.welcome}>Record</Text>:null}
           {!this.state.pending
               ?
         <View style={styles.container}>
-            <Text style={styles.welcome}>Start recording </Text>
+
             {this.state.started ? (
                 <TouchableOpacity
                     activeOpacity={0.5}
                     onPress={this.start}
+                    onLongPress={()=>alert("Pressed")}
                     title="Record"
                     disabled={this.state.recording}
                     style={styles.recBtn}>
@@ -319,23 +321,17 @@ export default class HomeScreen extends Component {
                 onPress={this.stop}
                 title="Stop"
                 disabled={!this.state.recording}
-                style={styles.recBtn}>
+                style={styles.stopBtn}>
                 <Image
-                    source={require('../../../imgs/stop.png')}
-                    style={styles.image}
+                    source={require('../../../imgs/animHeart3.gif')}
+                    style={styles.imageStop}
                 />
+                {/* <View style={styles.row}>
+                    <SkypeIndicator color='black' />
+                </View> */}
               </TouchableOpacity>  
             )
             }
-            <View style={styles.player}>
-              <Slider
-                step={1}
-                maximumValue={100}
-                onValueChange={this.change.bind(this)}
-                value={this.state.valueSlider}
-                style={styles.slider}
-              />
-            
               {this.state.paused ? (
                 <TouchableOpacity 
                   activeOpacity={0.5} 
@@ -344,7 +340,7 @@ export default class HomeScreen extends Component {
                   disabled={!this.state.audioFile}
                 >
                   <View>  
-                      <Icon style={[{color: 'white'}]} size={25} name={'ios-play'}/>  
+                      <Icon style={[{color: 'black'}]} size={25} name={'ios-play'}/>  
                   </View>
                 </TouchableOpacity>
                 ) : (
@@ -355,12 +351,11 @@ export default class HomeScreen extends Component {
                     disabled={!this.state.audioFile}
                   >
                     <View>  
-                      <Icon style={[{color: 'white'}]} size={25} name={'ios-pause'}/>  
+                      <Icon style={[{color: 'black'}]} size={25} name={'ios-pause'}/>  
                     </View>
                   </TouchableOpacity>
                 )}
-              </View>       
-            </View>
+              </View>  
             :
             <View>
                 <Pending></Pending>
@@ -383,19 +378,31 @@ const styles = StyleSheet.create({
     flex:1,
     justifyContent: 'center'
   },
+  row: {
+        justifyContent: 'center',
+        alignItems: 'center'
+      },
   image: {
     marginTop: 10,
     width: 250,
     height: 250,
     resizeMode: 'stretch'
   },
+  imageStop: {
+    marginTop: 10,
+    width: 300,
+    height: 300,
+    resizeMode: 'stretch'
+  },
   recBtn: {
     marginBottom: 5,
   },
   welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+    fontSize: 15,
+    fontWeight: 'bold',
+    marginLeft: 8,
+    marginTop: 15,
+    marginBottom: 15,
     justifyContent: 'flex-start'
     
   },
