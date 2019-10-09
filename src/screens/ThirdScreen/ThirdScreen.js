@@ -5,7 +5,7 @@ import {
   Image,
   View,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,Button
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ReactNativeSettingsPage, { 
@@ -127,10 +127,10 @@ class ThirdScreen extends Component{
       for(let i=0;i<res.length;i++){
         if(res[i]!='\n'){
           str = str.concat(res[i])
-        }else if(res[i]=='\n'){ 
-         
+        }else if(res[i]=='\n'){
+
           arr.push(str.split(','))
-          
+
           str = ""
         }
       }
@@ -150,7 +150,16 @@ class ThirdScreen extends Component{
   render(){
     return (
       <ReactNativeSettingsPage>
-    <SectionRow text='Records History'>
+    <SectionRow text='Records History' >
+        <View style={{
+
+            width:'25%',
+            alignSelf: 'flex-end',
+            marginTop: -5,
+            position: 'absolute',
+        }}>
+       <Button title="refresh" onpress={()=>this.readData()}></Button><Icon name="sync"></Icon>
+        </View>
       <ScrollView style={styles.container}>
         {/* <Text style={styles.welcome}>Last Recordings</Text> */}
         <View style={styles.top}>
@@ -160,25 +169,25 @@ class ThirdScreen extends Component{
                   style={styles.listItem}
                   key = {item.id}
                   onPress = {() => this.alertItemName((item.classs+" "+item.precent))}>
-                  <View style={styles.icon}>  
-                    <Icon style={[{color: item.color}]} size={50} name={'ios-heart'}/>  
+                  <View style={styles.icon}>
+                    <Icon style={[{color: item.color}]} size={50} name={'ios-heart'}/>
                   </View>
                   <View>
                     <View style={styles.subText}>
-                      <View>  
-                        <Icon size={20} name={'ios-calendar'}/>  
+                      <View>
+                        <Icon size={20} name={'ios-calendar'}/>
                       </View>
                       <Text style = {styles.text}>
                         {item.date}
                       </Text>
-                      <View>  
-                        <Icon size={20} name={'ios-time'}/>  
+                      <View>
+                        <Icon size={20} name={'ios-time'}/>
                       </View>
                       <Text style = {styles.text}>
                         {item.time}
                       </Text>
                     </View>
-                    
+
                     <Text style = {styles.lower}>
                       {item.classs}
                     </Text>
@@ -200,11 +209,11 @@ class ThirdScreen extends Component{
 }
 
 ThirdScreen.navigationOptions = {
-  tabBarLabel:'history',  
-  tabBarIcon: ({ tintColor }) => (  
-      <View>  
-          <Icon style={[{color: tintColor}]} size={25} name={'ios-time'}/>  
-      </View>),  
+  tabBarLabel:'history',
+  tabBarIcon: ({ tintColor }) => (
+      <View>
+          <Icon style={[{color: tintColor}]} size={25} name={'ios-time'}/>
+      </View>),
 };
 
 export default ThirdScreen
