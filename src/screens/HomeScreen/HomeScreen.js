@@ -6,6 +6,8 @@ import AudioRecord from 'react-native-audio-record';
 import { db, storage } from '../../config/firebase';
 import {Alert} from 'react-native';
 import Pending from "../Pending/pending";
+import {Modal, TouchableHighlight} from 'react-native';
+
 import {
   BallIndicator,
   BarIndicator,
@@ -297,9 +299,30 @@ export default class HomeScreen extends Component {
     const { navigate } = this.props.navigation; 
     return (
       <View style={styles.page}>
+          <Modal
+              animationType="slide"
+              transparent={false}
+              visible={this.state.pending}
+              onRequestClose={() => {
+                  Alert.alert('Modal has been closed.');
+              }}>
+              <View style={styles.page}>
+                  <View style={styles.row}>
+                      <Text style={styles.welcome}>
+                          Please Wait
+                      </Text>
+
+                      <Image
+                          source={require('../../../imgs/waitanim.gif')}
+                          style={styles.image}
+                      />
+                      <SkypeIndicator color='black' />
+                  </View>
+
+              </View>
+          </Modal>
         {!this.state.pending?<Text style={styles.welcome}>Record</Text>:null}
-          {!this.state.pending
-              ?
+
         <View style={styles.container}>
 
             {this.state.started ? (
@@ -356,11 +379,7 @@ export default class HomeScreen extends Component {
                   </TouchableOpacity>
                 )}
               </View>  
-            :
-            <View>
-                <Pending></Pending>
-            </View>
-            }
+
         </View>
     );
   }
