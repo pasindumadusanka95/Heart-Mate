@@ -24,14 +24,14 @@ export default class Pending extends React.Component {
             <View style={styles.page}>
                 <View style={styles.row}>
                     <Text style={styles.welcome}>
-                        Please Wait 
+                        Getting Result 
                     </Text>
                     
                     <Image
                         source={require('../../../imgs/waitanim.gif')}
                         style={styles.image}
                     />
-                    <SkypeIndicator color='black' />
+                    {/* <SkypeIndicator color='black' /> */}
                 </View>
                 
             </View>
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#ffffff"
     },
     welcome: {
-        fontSize: 25,
+        fontSize: 35,
         textAlign: 'center',
         margin: 20,
         fontFamily: 'roboto'

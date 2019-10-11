@@ -3,7 +3,8 @@ import {
   StyleSheet,
   Text,
   Image,
-  View
+  View,
+  ScrollView
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ReactNativeSettingsPage, { 
@@ -31,11 +32,30 @@ const styles = StyleSheet.create({
     color : 'gray'
   },
   container: {
-    padding: 20
+    flex: 1,
+    backgroundColor: '#ed3247',
   },
   subText: {
     textAlign: 'justify'
-  }
+  },
+  welcome: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    marginLeft: 8,
+    marginTop: 15,
+    marginBottom: 15,
+    justifyContent: 'flex-start',
+    color: 'white'
+    
+  },
+  top: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    marginTop: 5,
+    width: "100%",
+    backgroundColor: 'white',
+    padding: 10
+  },
 });
 
 this.state = {
@@ -45,10 +65,10 @@ this.state = {
 const FourthScreen = ()  => {
   
   return (
-    
-    <ReactNativeSettingsPage>
-    <SectionRow text='Information'>
-      <View style={styles.container}>
+  
+      <ScrollView style={styles.container}>
+      <Text style={styles.welcome}>Information</Text>
+      <View style={styles.top}>
         <Text style={styles.titleText} onPress={this.onPressTitle}>Heart Sounds</Text>
         <Text style={styles.subText}>Heart sounds are produced from a specific cardiac event such as closure of a valve or tensing of a chordae tendineae. Many pathologic cardiac conditions can be diagnosed by auscultation of the heart sounds.</Text>
 
@@ -58,9 +78,14 @@ const FourthScreen = ()  => {
           style={styles.image}
           source={require('../../../imgs/heartPlaces.png')}
         />
+        <Text style={styles.titleText} onPress={this.onPressTitle}>{'\n'}How to use the device</Text>
+        <Text style={styles.subText}>Place the stethescope microphone close to the heart (Between A and B points). Each heart sound recording must be 3 seconds or more than that. Press and hold record button to listen to your heart sound.{'\n'}</Text>
+        <Image
+          style={styles.image}
+          source={require('../../../imgs/vector_man.png')}
+        />
        </View>
-    </SectionRow> 
-  </ReactNativeSettingsPage>
+       </ScrollView>
   );
 }
 

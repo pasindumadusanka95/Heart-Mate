@@ -5,7 +5,7 @@ import {
   View,
   Dimensions,
   Alert,
-  Platform, YellowBox
+  Platform, YellowBox, ScrollView
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { PieChart, BarChart, Grid } from 'react-native-svg-charts'
@@ -32,12 +32,17 @@ let barData = [0]
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#ed3247',
   },
   welcome: {
-    fontSize: 20,
-    textAlign: 'left',
-    margin: 5,
+    fontSize: 15,
+    fontWeight: 'bold',
+    marginLeft: 8,
+    marginTop: 15,
+    marginBottom: 15,
+    justifyContent: 'flex-start',
+    color: 'white'
+    
   },
   headerText: {
     fontSize: 15,
@@ -99,7 +104,14 @@ const styles = StyleSheet.create({
     flexWrap:'wrap',
     justifyContent: 'center',
     alignItems: 'center',
-   }
+   },
+   top: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    marginTop: 5,
+    width: "100%",
+    backgroundColor: 'white',
+  },
 });
 
 let  lastRec = "[50,50]"
@@ -229,10 +241,10 @@ export default class SecondScreen extends Component{
       })
     }
     return (
-      <ReactNativeSettingsPage>
-      <SectionRow text='Result'>
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
+      <MyText style={styles.welcome}>Result</MyText>
         {/* <MyText style={styles.welcome}>Last Record</MyText> */}
+        <View style={styles.top}>
         <View style={styles.subText}>
           <View style={styles.icon}>  
             <Icon style={[{color: "red"}]} size={20} name={'ios-radio-button-on'}/>  
@@ -288,8 +300,7 @@ export default class SecondScreen extends Component{
           </BarChart>
         </View>
       </View>
-      </SectionRow>
-  </ReactNativeSettingsPage>
+      </ScrollView>
     );
   }
   

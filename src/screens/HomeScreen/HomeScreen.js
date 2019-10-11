@@ -87,6 +87,7 @@ export default class HomeScreen extends Component {
         show:false,
         valueSlider: 0,
         plotData: [50, 10, 40, 95, -4, -24, null, 85, undefined, 0, 35, 53, -53, 24, 50, -20, -80],
+        palying:false
     };
 
     
@@ -254,14 +255,21 @@ export default class HomeScreen extends Component {
     return new Promise((resolve, reject) => {
         if (!this.state.audioFile) {
             return reject('file path is empty');
+            this.setState({
+              playing: false
+            })
         }
 
         this.sound = new Sound(this.state.audioFile, '', error => {
             if (error) {
                 console.log('failed to load the file', error);
+                this.setState({
+                  playing: false
+                })
                 return reject(error);
             }
             this.setState({ loaded: true });
+            
             return resolve();
         });
     });
@@ -270,7 +278,12 @@ export default class HomeScreen extends Component {
   play = async () => {
     if (!this.state.loaded) {
         try {
+          this.setState({
+            playing: true
+          })
+          console.log("Play")
             await this.load();
+            console.log("Stopped")
         } catch (error) {
             console.log(error);
         }
@@ -281,6 +294,9 @@ export default class HomeScreen extends Component {
 
     this.sound.play(success => {
         if (success) {
+          this.setState({
+            playing: false
+          })
             console.log('successfully finished playing');
         } else {
             console.log('playback failed due to audio decoding errors');
@@ -305,18 +321,19 @@ export default class HomeScreen extends Component {
               visible={this.state.pending}
               onRequestClose={() => {
                   Alert.alert('Modal has been closed.');
-              }}>
-              <View style={styles.page}>
+              }}
+              style={{backgroundColor: 'white'}}>
+              <View style={styles.pageModal}>
                   <View style={styles.row}>
-                      <Text style={styles.welcome}>
-                          Please Wait
+                      <Text style={styles.waitMsg}>
+                        Please sit here for a while untill we calculate the result 
                       </Text>
 
                       <Image
                           source={require('../../../imgs/waitanim.gif')}
                           style={styles.image}
                       />
-                      <SkypeIndicator color='black' />
+                      {/* <SkypeIndicator color='black' /> */}
                   </View>
 
               </View>
@@ -329,14 +346,25 @@ export default class HomeScreen extends Component {
                 <TouchableOpacity
                     activeOpacity={0.5}
                     onPress={this.start}
-                    onLongPress={()=>alert("Pressed")}
+                    onLongPress={this.state.audioFile!==''?this.play:""}
                     title="Record"
-                    disabled={this.state.recording}
+                    disabled={this.state.recording || !this.state.paused}
                     style={styles.recBtn}>
-                    <Image
-                        source={require('../../../imgs/record.png')}
-                        style={styles.image}
-                    />
+                {!this.state.paused?
+                <View>
+                  <Text style={styles.recordingTxt}>Listen to your heart</Text>
+                  <Image
+                  source={require('../../../imgs/playing2.gif')}
+                  style={styles.image}
+                  />
+                </View>
+                
+                :
+                <Image
+                  source={require('../../../imgs/record.png')}
+                  style={styles.image}
+                />
+                  }
                 </TouchableOpacity>
             ) : (
               <TouchableOpacity
@@ -345,6 +373,7 @@ export default class HomeScreen extends Component {
                 title="Stop"
                 disabled={!this.state.recording}
                 style={styles.stopBtn}>
+                <Text style={styles.recordingTxt}>Recording your heart sound</Text>
                 <Image
                     source={require('../../../imgs/animHeart3.gif')}
                     style={styles.imageStop}
@@ -355,7 +384,7 @@ export default class HomeScreen extends Component {
               </TouchableOpacity>  
             )
             }
-              {this.state.paused ? (
+              {/* {this.state.paused ? (
                 <TouchableOpacity 
                   activeOpacity={0.5} 
                   onPress={this.play} 
@@ -377,7 +406,7 @@ export default class HomeScreen extends Component {
                       <Icon style={[{color: 'black'}]} size={25} name={'ios-pause'}/>  
                     </View>
                   </TouchableOpacity>
-                )}
+                )} */}
               </View>  
 
         </View>
@@ -395,12 +424,18 @@ const styles = StyleSheet.create({
   },
   page:{
     flex:1,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: '#ed3247',
+  },
+  pageModal: {
+    flex:1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   row: {
-        justifyContent: 'center',
-        alignItems: 'center'
-      },
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   image: {
     marginTop: 10,
     width: 250,
@@ -416,13 +451,28 @@ const styles = StyleSheet.create({
   recBtn: {
     marginBottom: 5,
   },
+  recordingTxt: {
+    fontSize: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontStyle: 'italic'
+  },
+  waitMsg:{ 
+    fontSize: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontFamily: 'ubuntu',
+    textAlign: "center",
+    fontStyle: 'italic'
+  },
   welcome: {
     fontSize: 15,
     fontWeight: 'bold',
     marginLeft: 8,
     marginTop: 15,
     marginBottom: 15,
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
+    color: 'white'
     
   },
   playImage: {

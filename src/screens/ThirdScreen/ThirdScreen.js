@@ -5,7 +5,7 @@ import {
   Image,
   View,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,Button
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ReactNativeSettingsPage, { 
@@ -22,7 +22,7 @@ var path = RNFS.DocumentDirectoryPath + '/'+userid+'.txt';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#ed3247',
   },
   text: {
     color: '#4f603c',
@@ -57,15 +57,21 @@ const styles = StyleSheet.create({
     height: 16,
   },
   welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+    fontSize: 15,
+    fontWeight: 'bold',
+    marginLeft: 8,
+    marginTop: 15,
+    marginBottom: 15,
+    justifyContent: 'flex-start',
+    color: 'white'
+    
   },
   top: {
     flex: 1,
     justifyContent: 'flex-start',
     marginTop: 5,
-    width: "100%"
+    width: "100%",
+    backgroundColor: 'white',
   },
   listItem: {
     borderColor: "green",
@@ -127,10 +133,10 @@ class ThirdScreen extends Component{
       for(let i=0;i<res.length;i++){
         if(res[i]!='\n'){
           str = str.concat(res[i])
-        }else if(res[i]=='\n'){ 
-         
+        }else if(res[i]=='\n'){
+
           arr.push(str.split(','))
-          
+
           str = ""
         }
       }
@@ -149,36 +155,37 @@ class ThirdScreen extends Component{
 
   render(){
     return (
-      <ReactNativeSettingsPage>
-    <SectionRow text='Records History'>
+     
       <ScrollView style={styles.container}>
         {/* <Text style={styles.welcome}>Last Recordings</Text> */}
+        <Text style={styles.welcome}>Record History</Text>
         <View style={styles.top}>
+        {/* <Button title="refresh" onpress={()=>this.readData()}></Button><Icon name="sync"></Icon> */}
           {
             this.state.names.map((item, index) => (
               <TouchableOpacity
                   style={styles.listItem}
                   key = {item.id}
-                  onPress = {() => this.alertItemName((item.classs+" "+item.precent))}>
-                  <View style={styles.icon}>  
-                    <Icon style={[{color: item.color}]} size={50} name={'ios-heart'}/>  
+                  onPress={()=>this.readData()}>
+                  <View style={styles.icon}>
+                    <Icon style={[{color: item.color}]} size={50} name={'ios-heart'}/>
                   </View>
                   <View>
                     <View style={styles.subText}>
-                      <View>  
-                        <Icon size={20} name={'ios-calendar'}/>  
+                      <View>
+                        <Icon size={20} name={'ios-calendar'}/>
                       </View>
                       <Text style = {styles.text}>
                         {item.date}
                       </Text>
-                      <View>  
-                        <Icon size={20} name={'ios-time'}/>  
+                      <View>
+                        <Icon size={20} name={'ios-time'}/>
                       </View>
                       <Text style = {styles.text}>
                         {item.time}
                       </Text>
                     </View>
-                    
+
                     <Text style = {styles.lower}>
                       {item.classs}
                     </Text>
@@ -193,18 +200,16 @@ class ThirdScreen extends Component{
           }
         </View>
       </ScrollView>
-      </SectionRow>
-  </ReactNativeSettingsPage>
     );
   }
 }
 
 ThirdScreen.navigationOptions = {
-  tabBarLabel:'history',  
-  tabBarIcon: ({ tintColor }) => (  
-      <View>  
-          <Icon style={[{color: tintColor}]} size={25} name={'ios-time'}/>  
-      </View>),  
+  tabBarLabel:'history',
+  tabBarIcon: ({ tintColor }) => (
+      <View>
+          <Icon style={[{color: tintColor}]} size={25} name={'ios-time'}/>
+      </View>),
 };
 
 export default ThirdScreen
