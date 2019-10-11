@@ -44,6 +44,15 @@ const styles = StyleSheet.create({
     color: 'white'
     
   },
+  BarChartText: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    marginLeft: 8,
+    marginTop: 15,
+    marginBottom: 15,
+    justifyContent: 'flex-start',
+    textAlign: 'center'
+  },
   headerText: {
     fontSize: 15,
     margin: 5,
@@ -73,6 +82,7 @@ const styles = StyleSheet.create({
     padding: 20
   },
   top: {
+    flex: 1,
     justifyContent: 'flex-start',
     marginTop: 5
   },
@@ -114,7 +124,9 @@ const styles = StyleSheet.create({
   },
 });
 
-let  lastRec = "[50,50]"
+let  lastRec = "[51.3,48.7]"
+let classs = "Abnormal"
+let colorOfClass = "#ca0b00"
 
 export default class SecondScreen extends Component{
   constructor(props) {
@@ -193,6 +205,8 @@ export default class SecondScreen extends Component{
   handleJSON(data2){
     console.log("In handle JSON")
     let classOfAudio = data2['class']
+    classs = classOfAudio
+    colorOfClass = classOfAudio=="Abnormal"?"#ca0b00":"#5aa27c"
     let precentage = data2['precentage']
 
     let precentageArr = JSON.parse(precentage)
@@ -204,7 +218,7 @@ export default class SecondScreen extends Component{
 
   render(){
     const { navigation } = this.props; 
-    const dataJson = navigation.getParam('data', {class: "None",precentage: lastRec});
+    const dataJson = navigation.getParam('data', {class: classs,precentage: lastRec});
     pieDatas = this.handleJSON(dataJson)
 
     const data = [
@@ -245,7 +259,7 @@ export default class SecondScreen extends Component{
       <MyText style={styles.welcome}>Result</MyText>
         {/* <MyText style={styles.welcome}>Last Record</MyText> */}
         <View style={styles.top}>
-        <View style={styles.subText}>
+        {/* <View style={styles.subText}>
           <View style={styles.icon}>  
             <Icon style={[{color: "red"}]} size={20} name={'ios-radio-button-on'}/>  
           </View>
@@ -260,8 +274,9 @@ export default class SecondScreen extends Component{
           <MyText style = {styles.text}>
             Normal
           </MyText>
-        </View>
+        </View> */}
         <View style={styles.top}>
+        <MyText style={styles.BarChartText}>Last Record</MyText>
           <PieChart
             style={styles.piechart}
             valueAccessor={({ item }) => item.amount}
@@ -270,10 +285,22 @@ export default class SecondScreen extends Component{
             outerRadius={'95%'}
           >
             <Labels/>
+            <Text
+              key={3}
+              fill={colorOfClass}
+              textAnchor={'middle'}
+              alignmentBaseline={'middle'}
+              fontSize={30}
+              stroke={'black'}
+              strokeWidth={0.2}
+              fontFamily={'roboto'}
+            >
+              {classs}
+            </Text>
           </PieChart>
         </View>
         <View style={styles.dropDownRow}>
-          <MyText style={styles.welcome}>Last 8 Predictions</MyText>
+          <MyText style={styles.BarChartText}>Last 8 Predictions</MyText>
           <View style={styles.dropDown}>
             <MenuProvider style={{ flexDirection: "column", padding: 20 }}>
               <Menu onSelect={value => alert(`Display ${value} predictions`)}>
