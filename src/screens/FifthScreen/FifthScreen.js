@@ -9,13 +9,6 @@ import {
   TouchableHighlight
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import ReactNativeSettingsPage, { 
-	SectionRow, 
-	NavigateRow,
-  CheckRow,
-  SwitchRow, 
-  SliderRow
-} from 'react-native-settings-page';
 
 const styles = StyleSheet.create({
   container: {
