@@ -8,13 +8,7 @@ import {
   TouchableOpacity,Button
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import ReactNativeSettingsPage, { 
-	SectionRow, 
-	NavigateRow,
-  CheckRow,
-  SwitchRow, 
-  SliderRow
-} from 'react-native-settings-page';
+
 const userid="Joe1234"
 var RNFS = require('react-native-fs');
 var path = RNFS.DocumentDirectoryPath + '/'+userid+'.txt';

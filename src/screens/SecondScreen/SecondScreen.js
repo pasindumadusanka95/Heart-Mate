@@ -9,13 +9,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { PieChart, BarChart, Grid } from 'react-native-svg-charts'
-import ReactNativeSettingsPage, { 
-	SectionRow, 
-	NavigateRow,
-  CheckRow,
-  SwitchRow, 
-  SliderRow
-} from 'react-native-settings-page';
+
 import Svg, {
   Text,
   Line,

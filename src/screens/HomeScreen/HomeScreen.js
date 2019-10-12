@@ -91,24 +91,10 @@ export default class HomeScreen extends Component {
     };
 
     
-  async componentDidMount() {
+   componentDidMount() {
       this.setState({pending:false})
-    await this.checkPermission();
+     this.checkPermission();
 
-    const options = {
-        sampleRate: 44100,
-        channels: 2,
-        bitsPerSample: 16,
-        wavFile: 'test.wav'
-    };
-
-    AudioRecord.init(options);
-
-    AudioRecord.on('data', data => {
-      const chunk = Buffer.from(data, 'base64');
-      //console.log('chunk size', chunk.byteLength);
-      // do something with audio chunk
-    });
     }
 
   getDate(){
@@ -135,6 +121,20 @@ export default class HomeScreen extends Component {
   start = () => {    
     console.log('start record');
     this.setState({ audioFile: '', recording: true, loaded: false, started: false });
+      const options = {
+          sampleRate: 44100,
+          channels: 2,
+          bitsPerSample: 16,
+          wavFile: 'test.wav'
+      };
+
+      AudioRecord.init(options);
+
+      AudioRecord.on('data', data => {
+          const chunk = Buffer.from(data, 'base64');
+          //console.log('chunk size', chunk.byteLength);
+          // do something with audio chunk
+      });
     AudioRecord.start();
   };
 
