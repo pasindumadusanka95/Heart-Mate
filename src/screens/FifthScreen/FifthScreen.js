@@ -49,12 +49,13 @@ const styles = StyleSheet.create({
     padding: 100
   },
   titleText: {
-    fontSize: 18,
+    fontSize: 15,
     color : 'black',
     width: "100%",
-    borderBottomWidth: 1,
-    borderBottomColor: 'grey',
-    marginBottom: 5
+    borderLeftWidth: 2,
+    borderLeftColor: 'grey',
+    marginBottom: 5,
+    paddingLeft: 5
   },
   closeModal: {
     borderWidth: 1,

@@ -319,9 +319,9 @@ export default class HomeScreen extends Component {
               animationType="slide"
               transparent={false}
               visible={this.state.pending}
-              onRequestClose={() => {
-                  Alert.alert('Modal has been closed.');
-              }}
+              // onRequestClose={() => {
+                  
+              // }}
               style={{backgroundColor: 'white'}}>
               <View style={styles.pageModal}>
                   <View style={styles.row}>
@@ -346,7 +346,7 @@ export default class HomeScreen extends Component {
                 <TouchableOpacity
                     activeOpacity={0.5}
                     onPress={this.start}
-                    onLongPress={this.state.audioFile!==''?this.play:""}
+                    onLongPress={this.state.audioFile!==''?this.play:()=>{console.log("Cannot execute")}}
                     title="Record"
                     disabled={this.state.recording || !this.state.paused}
                     style={styles.recBtn}>

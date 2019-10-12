@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
 });
 
 let  lastRec = "[51.3,48.7]"
-let classs = "Abnormal"
+let classs = "Normal"
 let colorOfClass = "#ca0b00"
 
 export default class SecondScreen extends Component{
@@ -144,10 +144,10 @@ export default class SecondScreen extends Component{
     }
   }
 
-  popInfo(index){
+  popInfo(index, classs){
     Alert.alert(
       'Prediction info',
-      index+'% Abnormal',
+      'At the moment your heart has '+index+'% '+classs+ ' sound pattern.',
       [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ],
@@ -187,6 +187,7 @@ export default class SecondScreen extends Component{
     let n = bardata.length-1
     bardata = bardata.slice(n-8,n+3)
     let temp = []
+    barData = []
     for(let i=0;i<bardata.length;i++){
       let abnorml = parseFloat(bardata[i][4].slice(1,6))
       if(i==bardata.length-1){
@@ -221,16 +222,16 @@ export default class SecondScreen extends Component{
     const dataJson = navigation.getParam('data', {class: classs,precentage: lastRec});
     pieDatas = this.handleJSON(dataJson)
 
-    const data = [
+    const datas = [
       {
           key: 1,
           amount: pieDatas[1][0],
-          svg: { fill: '#5aa27c',onPress: () => this.popInfo(pieDatas[1][0]) },
+          svg: { fill: '#5aa27c',onPress: () => this.popInfo(pieDatas[1][0], "Normal") },
       },
       {
           key: 2,
           amount: pieDatas[1][1],
-          svg: { fill: '#ca0b00', onPress: () => this.popInfo(pieDatas[1][1]) }
+          svg: { fill: '#ca0b00', onPress: () => this.popInfo(pieDatas[1][1], "Abnormal") }
       },
     ]
 
@@ -254,6 +255,23 @@ export default class SecondScreen extends Component{
           )
       })
     }
+    const CUT_OFF = 100
+    const LabelsBar = ({ x, y, bandwidth, data}) => (
+      data.map((value, index) => (
+          <Text
+              key={ index }
+              x={ x(index) + (bandwidth / 2) }
+              y={ value < CUT_OFF ? y(value)+20 : y(value)+20 }
+              fontSize={ 14 }
+              fill={ value >= CUT_OFF ? 'white' : 'white' }
+              alignmentBaseline={ 'middle' }
+              textAnchor={ 'middle' }
+          >
+              {value+'%'}
+          </Text>
+      ))
+    )
+
     return (
       <ScrollView style={styles.container}>
       <MyText style={styles.welcome}>Result</MyText>
@@ -280,7 +298,7 @@ export default class SecondScreen extends Component{
           <PieChart
             style={styles.piechart}
             valueAccessor={({ item }) => item.amount}
-            data={data}
+            data={datas}
             spacing={0}
             outerRadius={'95%'}
           >
@@ -314,7 +332,7 @@ export default class SecondScreen extends Component{
                     <MyText style={styles.menuContent}>Normal</MyText>
                   </MenuOption>
                   <MenuOption value={"normal"}>
-                    <Text style={styles.menuContent}></Text>
+                    <Text style={styles.menuContent}>Normal</Text>
                   </MenuOption>
                 </MenuOptions>
 
@@ -323,7 +341,15 @@ export default class SecondScreen extends Component{
           </View>
         </View>
         <View style={styles.bottom}>
-          <BarChart style={styles.barchart} data={barData} svg={{ fill: '#ca0b00' }} contentInset={{ top: 5, bottom: 5}}>
+          <BarChart 
+            style={styles.barchart} 
+            data={barData} 
+            svg={{ fill: '#ca0b00' }} 
+            contentInset={{ top: 5, bottom: 5}} 
+            spacing={0.2}
+            gridMin={0}>
+            <Grid/>
+            <LabelsBar/>
           </BarChart>
         </View>
       </View>
