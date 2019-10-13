@@ -115,7 +115,7 @@ export default class HomeScreen extends Component {
   requestPermission = async () => {
       const p = await Permissions.request('microphone');
       console.log('permission request', p);
-      const p2 = await Permissions.request('vibrate');
+      //const p2 = await Permissions.request('vibrate');
   };
 
   start = () => {    

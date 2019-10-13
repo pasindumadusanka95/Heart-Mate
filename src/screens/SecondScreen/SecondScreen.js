@@ -15,7 +15,6 @@ import Svg, {
   Line,
 } from 'react-native-svg';
 import {Text as MyText} from 'react-native'
-import { Menu, MenuProvider, MenuOptions, MenuOption, MenuTrigger} from "react-native-popup-menu"
 
 const userid="Joe1234"
 var RNFS = require('react-native-fs');
@@ -121,6 +120,7 @@ const styles = StyleSheet.create({
 let  lastRec = "[51.3,48.7]"
 let classs = "Normal"
 let colorOfClass = "#ca0b00"
+let displayClass = "Abnormal"
 
 export default class SecondScreen extends Component{
   constructor(props) {
@@ -177,24 +177,41 @@ export default class SecondScreen extends Component{
 
   getPrecentages(bardata){
     console.log(bardata)
-    barData.shift()
-    let n = bardata.length-1
-    bardata = bardata.slice(n-8,n+3)
+    //barData.shift()
+    let n = bardata.length
+    let start = n-9
+    let end = n-1
+    bardata = bardata.slice(start,end)
+    console.log(start, end)
+    if(start<0){
+      console.log("Invalid")
+      bardata = bardata.slice(0,n-1)
+      console.log(bardata)
+    }
     let temp = []
     barData = []
     for(let i=0;i<bardata.length;i++){
       let abnorml = parseFloat(bardata[i][4].slice(1,6))
+      let normal = parseFloat(bardata[i][3].slice(1,6))
       if(i==bardata.length-1){
-        let normal = parseFloat(bardata[i][3].slice(1,6))
+        
         lastRec = JSON.stringify([normal, abnorml])
         console.log(lastRec)
       }
-      barData.push(abnorml)
+      if(displayClass==="Abnormal"){
+        barData.push(abnorml)
+      }else{
+        barData.push(normal)
+      }
+      
       console.log(abnorml)
     }
-    if(barData.length>7){
-      barData.shift()
+    if(this.state.barData!==undefined){
+      this.setState({
+      barData: barData
+    })
     }
+    
   }
 
   handleJSON(data2){
@@ -249,15 +266,15 @@ export default class SecondScreen extends Component{
           )
       })
     }
-    const CUT_OFF = 100
+    const CUT_OFF = 5
     const LabelsBar = ({ x, y, bandwidth, data}) => (
       data.map((value, index) => (
           <Text
               key={ index }
               x={ x(index) + (bandwidth / 2) }
-              y={ value < CUT_OFF ? y(value)+20 : y(value)+20 }
+              y={ value < CUT_OFF ? y(value)-10 : y(value)+20 }
               fontSize={ 14 }
-              fill={ value >= CUT_OFF ? 'white' : 'white' }
+              fill={ value >= CUT_OFF ? 'white' : 'black' }
               alignmentBaseline={ 'middle' }
               textAnchor={ 'middle' }
           >
@@ -312,10 +329,13 @@ export default class SecondScreen extends Component{
           </PieChart>
         </View>
         <View style={styles.dropDownRow}>
-          <MyText style={styles.BarChartText}>Last 8 Predictions</MyText>
-          <View style={styles.dropDown}>
+          <MyText style={styles.BarChartText}>Last 8  Abnormal Predictions</MyText>
+          {/* <View style={styles.dropDown}>
             <MenuProvider style={{ flexDirection: "column", padding: 20 }}>
-              <Menu onSelect={value => alert(`Display ${value} predictions`)}>
+              <Menu onSelect={value => ()=>{
+                alert(`Display ${value} predictions`);
+                displayClass = value
+              }}>
 
                 <MenuTrigger  >
                 <MyText style={styles.headerText}>Abnormal</MyText>
@@ -332,7 +352,7 @@ export default class SecondScreen extends Component{
 
               </Menu>
             </MenuProvider>
-          </View>
+          </View> */}
         </View>
         <View style={styles.bottom}>
           <BarChart 

@@ -13,12 +13,14 @@ const styles = StyleSheet.create({
   baseText: {
     fontFamily: 'Cochin',
     fontSize: 20
-  },image: {
+  },
+  image: {
     marginTop: 10,
     width: '100%',
     height: 400,
     resizeMode: 'stretch',
-    justifyContent : 'center'
+    justifyContent : 'center',
+    padding: 20
   },
   titleText: {
     fontSize: 22,
@@ -30,7 +32,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#ed3247',
   },
   subText: {
-    textAlign: 'justify'
+    textAlign: 'justify',
+    fontSize: 18
   },
   welcome: {
     fontSize: 15,
@@ -63,21 +66,18 @@ const FourthScreen = ()  => {
       <ScrollView style={styles.container}>
       <Text style={styles.welcome}>Information</Text>
       <View style={styles.top}>
-        <Text style={styles.titleText} onPress={this.onPressTitle}>Heart Sounds</Text>
-        <Text style={styles.subText}>Heart sounds are produced from a specific cardiac event such as closure of a valve or tensing of a chordae tendineae. Many pathologic cardiac conditions can be diagnosed by auscultation of the heart sounds.</Text>
-
-        <Text style={styles.titleText} onPress={this.onPressTitle}>{'\n'}Location</Text>
-        <Text style={styles.subText}>The location of the heart sound can help determine the etiology. The standard listening posts (aortic, pulmonic, tricuspid and mitral) apply to both heart sounds and murmurs.{'\n'}</Text>
+      <Text style={styles.titleText} onPress={this.onPressTitle}>How to use the device</Text>
+        <Text style={styles.subText}>Place the stethescope microphone close to the heart (Between A and P points). Each heart sound recording must be 3 seconds or more than that. Press and hold record button to listen to your heart sound.{'\n'}</Text>
         <Image
           style={styles.image}
           source={require('../../../imgs/heartPlaces.png')}
         />
-        <Text style={styles.titleText} onPress={this.onPressTitle}>{'\n'}How to use the device</Text>
-        <Text style={styles.subText}>Place the stethescope microphone close to the heart (Between A and B points). Each heart sound recording must be 3 seconds or more than that. Press and hold record button to listen to your heart sound.{'\n'}</Text>
         <Image
           style={styles.image}
-          source={require('../../../imgs/vector_man.png')}
+          source={require('../../../imgs/placing.png')}
         />
+        <Text style={styles.subText}>{'\n'}NOTE: The standard listening posts are A-aortic, P-pulmonic, T-tricuspid and M-mitral.{'\n'}</Text>
+        
        </View>
        </ScrollView>
   );
