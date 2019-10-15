@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View,Text} from "react-native";
+import {StyleSheet, View,Text, Image} from "react-native";
 import {
     BallIndicator,
     BarIndicator,
@@ -24,9 +24,14 @@ export default class Pending extends React.Component {
             <View style={styles.page}>
                 <View style={styles.row}>
                     <Text style={styles.welcome}>
-                        Please Wait 
+                        Getting Result 
                     </Text>
-                    <DotIndicator color='black' />
+                    
+                    <Image
+                        source={require('../../../imgs/waitanim.gif')}
+                        style={styles.image}
+                    />
+                    {/* <SkypeIndicator color='black' /> */}
                 </View>
                 
             </View>
@@ -38,16 +43,25 @@ const styles = StyleSheet.create({
     page:{
         flex:1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: "#ffffff"
     },
     welcome: {
-        fontSize: 30,
+        fontSize: 35,
         textAlign: 'center',
-        margin: 10,
+        margin: 20,
+        fontFamily: 'roboto'
         
       },
       row: {
         justifyContent: 'center',
         alignItems: 'center'
-      }
+      },
+      image: {
+        marginTop: 10,
+        marginBottom: 30,
+        width: 250,
+        height: 250,
+        resizeMode: 'stretch'
+      },
 })

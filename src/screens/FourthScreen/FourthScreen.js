@@ -3,27 +3,24 @@ import {
   StyleSheet,
   Text,
   Image,
-  View
+  View,
+  ScrollView
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import ReactNativeSettingsPage, { 
-	SectionRow, 
-	NavigateRow,
-  CheckRow,
-  SwitchRow, 
-  SliderRow
-} from 'react-native-settings-page';
+
 
 const styles = StyleSheet.create({
   baseText: {
     fontFamily: 'Cochin',
     fontSize: 20
-  },image: {
+  },
+  image: {
     marginTop: 10,
     width: '100%',
     height: 400,
     resizeMode: 'stretch',
-    justifyContent : 'center'
+    justifyContent : 'center',
+    padding: 20
   },
   titleText: {
     fontSize: 22,
@@ -31,11 +28,31 @@ const styles = StyleSheet.create({
     color : 'gray'
   },
   container: {
-    padding: 20
+    flex: 1,
+    backgroundColor: '#ed3247',
   },
   subText: {
-    textAlign: 'justify'
-  }
+    textAlign: 'justify',
+    fontSize: 18
+  },
+  welcome: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    marginLeft: 8,
+    marginTop: 15,
+    marginBottom: 15,
+    justifyContent: 'flex-start',
+    color: 'white'
+    
+  },
+  top: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    marginTop: 5,
+    width: "100%",
+    backgroundColor: 'white',
+    padding: 10
+  },
 });
 
 this.state = {
@@ -45,29 +62,24 @@ this.state = {
 const FourthScreen = ()  => {
   
   return (
-    
-    <ReactNativeSettingsPage>
-    <SectionRow text='Information'>
-      <View style={styles.container}>
-        <Text style={styles.titleText} onPress={this.onPressTitle}>Heart Sounds</Text>
-        <Text style={styles.subText}>Heart sounds are produced from a specific cardiac event such as closure of a valve or tensing of a chordae tendineae. Many pathologic cardiac conditions can be diagnosed by auscultation of the heart sounds. {'\n\n'}The main normal heart sounds are the S1 and the S2 heart sound. The S3 can be normal, at times, but may be pathologic. A S4 heart sound is almost always pathologic. Heart sounds can be described by their intensity, pitch, location, quality and timing in the cardiac cycle.</Text>
-        <Text style={styles.titleText} onPress={this.onPressTitle}>{'\n'}Intensity</Text>
-        <Text style={styles.subText}>Heart sounds can be described as increased in intensity (loud), decreased in intensity (soft) or absent.{'\n'}</Text>
-
-        <Text style={styles.titleText} onPress={this.onPressTitle}>{'\n'}Pitch</Text>
-        <Text style={styles.subText}>Heart sounds can be described as high pitched (heard best with the diaphragm of the stethoscope).{'\n'}</Text>
-
-        <Text style={styles.titleText} onPress={this.onPressTitle}>{'\n'}Location</Text>
-        <Text style={styles.subText}>The location of the heart sound can help determine the etiology. The standard listening posts (aortic, pulmonic, tricuspid and mitral) apply to both heart sounds and murmurs. For example, the S1 heart sound — consisting of mitral and tricuspid valve closure — is best heard at the tricuspid (left lower sternal border) and mitral (cardiac apex) listening posts.{'\n'}</Text>
+  
+      <ScrollView style={styles.container}>
+      <Text style={styles.welcome}>Information</Text>
+      <View style={styles.top}>
+      <Text style={styles.titleText} onPress={this.onPressTitle}>How to use the device</Text>
+        <Text style={styles.subText}>Place the stethescope microphone close to the heart (Between A and P points). Each heart sound recording must be 3 seconds or more than that. Press and hold record button to listen to your heart sound.{'\n'}</Text>
         <Image
           style={styles.image}
           source={require('../../../imgs/heartPlaces.png')}
         />
-        <Text style={styles.titleText} onPress={this.onPressTitle}>{'\n'}Timing</Text>
-        <Text style={styles.subText}>The timing can be described as during early, mid or late systole or early, mid or late diastole.</Text>
-      </View>
-    </SectionRow> 
-  </ReactNativeSettingsPage>
+        <Image
+          style={styles.image}
+          source={require('../../../imgs/placing.png')}
+        />
+        <Text style={styles.subText}>{'\n'}NOTE: The standard listening posts are A-aortic, P-pulmonic, T-tricuspid and M-mitral.{'\n'}</Text>
+        
+       </View>
+       </ScrollView>
   );
 }
 

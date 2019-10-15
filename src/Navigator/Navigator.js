@@ -18,8 +18,8 @@ const TabNavigator = createMaterialBottomTabNavigator(
     {
       initialRouteName: 'record',
       activeColor: '#f0edf6',
-      inactiveColor: '#3e2465',
-      barStyle: { backgroundColor: '#694fad' },
+      inactiveColor: '#cd1a2f',
+      barStyle: { backgroundColor: '#ed3247' },
     }
   );
   export default createAppContainer(TabNavigator);  

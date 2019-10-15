@@ -6,6 +6,8 @@ import AudioRecord from 'react-native-audio-record';
 import { db, storage } from '../../config/firebase';
 import {Alert} from 'react-native';
 import Pending from "../Pending/pending";
+import {Modal, TouchableHighlight} from 'react-native';
+
 import {
   BallIndicator,
   BarIndicator,
@@ -85,27 +87,14 @@ export default class HomeScreen extends Component {
         show:false,
         valueSlider: 0,
         plotData: [50, 10, 40, 95, -4, -24, null, 85, undefined, 0, 35, 53, -53, 24, 50, -20, -80],
+        palying:false
     };
 
     
-  async componentDidMount() {
+   componentDidMount() {
       this.setState({pending:false})
-    await this.checkPermission();
+     this.checkPermission();
 
-    const options = {
-        sampleRate: 44100,
-        channels: 2,
-        bitsPerSample: 16,
-        wavFile: 'test.wav'
-    };
-
-    AudioRecord.init(options);
-
-    AudioRecord.on('data', data => {
-      const chunk = Buffer.from(data, 'base64');
-      //console.log('chunk size', chunk.byteLength);
-      // do something with audio chunk
-    });
     }
 
   getDate(){
@@ -126,12 +115,26 @@ export default class HomeScreen extends Component {
   requestPermission = async () => {
       const p = await Permissions.request('microphone');
       console.log('permission request', p);
-      const p2 = await Permissions.request('vibrate');
+      //const p2 = await Permissions.request('vibrate');
   };
 
   start = () => {    
     console.log('start record');
     this.setState({ audioFile: '', recording: true, loaded: false, started: false });
+      const options = {
+          sampleRate: 44100,
+          channels: 2,
+          bitsPerSample: 16,
+          wavFile: 'test.wav'
+      };
+
+      AudioRecord.init(options);
+
+      AudioRecord.on('data', data => {
+          const chunk = Buffer.from(data, 'base64');
+          //console.log('chunk size', chunk.byteLength);
+          // do something with audio chunk
+      });
     AudioRecord.start();
   };
 
@@ -232,7 +235,7 @@ export default class HomeScreen extends Component {
       result: json
     })
     this.writeData(json)
-      this.setState({pending:false})
+    this.setState({pending:false})
     this.props.navigation.navigate('result', { data: json})
   }
 
@@ -252,14 +255,21 @@ export default class HomeScreen extends Component {
     return new Promise((resolve, reject) => {
         if (!this.state.audioFile) {
             return reject('file path is empty');
+            this.setState({
+              playing: false
+            })
         }
 
         this.sound = new Sound(this.state.audioFile, '', error => {
             if (error) {
                 console.log('failed to load the file', error);
+                this.setState({
+                  playing: false
+                })
                 return reject(error);
             }
             this.setState({ loaded: true });
+            
             return resolve();
         });
     });
@@ -268,7 +278,12 @@ export default class HomeScreen extends Component {
   play = async () => {
     if (!this.state.loaded) {
         try {
+          this.setState({
+            playing: true
+          })
+          console.log("Play")
             await this.load();
+            console.log("Stopped")
         } catch (error) {
             console.log(error);
         }
@@ -279,6 +294,9 @@ export default class HomeScreen extends Component {
 
     this.sound.play(success => {
         if (success) {
+          this.setState({
+            playing: false
+          })
             console.log('successfully finished playing');
         } else {
             console.log('playback failed due to audio decoding errors');
@@ -297,21 +315,56 @@ export default class HomeScreen extends Component {
     const { navigate } = this.props.navigation; 
     return (
       <View style={styles.page}>
-          {!this.state.pending
-              ?
+          <Modal
+              animationType="slide"
+              transparent={false}
+              visible={this.state.pending}
+              // onRequestClose={() => {
+                  
+              // }}
+              style={{backgroundColor: 'white'}}>
+              <View style={styles.pageModal}>
+                  <View style={styles.row}>
+                      <Text style={styles.waitMsg}>
+                        Please sit here for a while untill we calculate the result 
+                      </Text>
+
+                      <Image
+                          source={require('../../../imgs/waitanim.gif')}
+                          style={styles.image}
+                      />
+                      {/* <SkypeIndicator color='black' /> */}
+                  </View>
+
+              </View>
+          </Modal>
+        {!this.state.pending?<Text style={styles.welcome}>Record</Text>:null}
+
         <View style={styles.container}>
-            <Text style={styles.welcome}>Start recording </Text>
+
             {this.state.started ? (
                 <TouchableOpacity
                     activeOpacity={0.5}
                     onPress={this.start}
+                    onLongPress={this.state.audioFile!==''?this.play:()=>{console.log("Cannot execute")}}
                     title="Record"
-                    disabled={this.state.recording}
+                    disabled={this.state.recording || !this.state.paused}
                     style={styles.recBtn}>
-                    <Image
-                        source={require('../../../imgs/record.png')}
-                        style={styles.image}
-                    />
+                {!this.state.paused?
+                <View>
+                  <Text style={styles.recordingTxt}>Listen to your heart</Text>
+                  <Image
+                  source={require('../../../imgs/playing2.gif')}
+                  style={styles.image}
+                  />
+                </View>
+                
+                :
+                <Image
+                  source={require('../../../imgs/record.png')}
+                  style={styles.image}
+                />
+                  }
                 </TouchableOpacity>
             ) : (
               <TouchableOpacity
@@ -319,24 +372,19 @@ export default class HomeScreen extends Component {
                 onPress={this.stop}
                 title="Stop"
                 disabled={!this.state.recording}
-                style={styles.recBtn}>
+                style={styles.stopBtn}>
+                <Text style={styles.recordingTxt}>Recording your heart sound</Text>
                 <Image
-                    source={require('../../../imgs/stop.png')}
-                    style={styles.image}
+                    source={require('../../../imgs/animHeart3.gif')}
+                    style={styles.imageStop}
                 />
+                {/* <View style={styles.row}>
+                    <SkypeIndicator color='black' />
+                </View> */}
               </TouchableOpacity>  
             )
             }
-            <View style={styles.player}>
-              <Slider
-                step={1}
-                maximumValue={100}
-                onValueChange={this.change.bind(this)}
-                value={this.state.valueSlider}
-                style={styles.slider}
-              />
-            
-              {this.state.paused ? (
+              {/* {this.state.paused ? (
                 <TouchableOpacity 
                   activeOpacity={0.5} 
                   onPress={this.play} 
@@ -344,7 +392,7 @@ export default class HomeScreen extends Component {
                   disabled={!this.state.audioFile}
                 >
                   <View>  
-                      <Icon style={[{color: 'white'}]} size={25} name={'ios-play'}/>  
+                      <Icon style={[{color: 'black'}]} size={25} name={'ios-play'}/>  
                   </View>
                 </TouchableOpacity>
                 ) : (
@@ -355,17 +403,12 @@ export default class HomeScreen extends Component {
                     disabled={!this.state.audioFile}
                   >
                     <View>  
-                      <Icon style={[{color: 'white'}]} size={25} name={'ios-pause'}/>  
+                      <Icon style={[{color: 'black'}]} size={25} name={'ios-pause'}/>  
                     </View>
                   </TouchableOpacity>
-                )}
-              </View>       
-            </View>
-            :
-            <View>
-                <Pending></Pending>
-            </View>
-            }
+                )} */}
+              </View>  
+
         </View>
     );
   }
@@ -381,7 +424,17 @@ const styles = StyleSheet.create({
   },
   page:{
     flex:1,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: '#ed3247',
+  },
+  pageModal: {
+    flex:1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  row: {
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   image: {
     marginTop: 10,
@@ -389,14 +442,37 @@ const styles = StyleSheet.create({
     height: 250,
     resizeMode: 'stretch'
   },
+  imageStop: {
+    marginTop: 10,
+    width: 300,
+    height: 300,
+    resizeMode: 'stretch'
+  },
   recBtn: {
     marginBottom: 5,
   },
+  recordingTxt: {
+    fontSize: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontStyle: 'italic'
+  },
+  waitMsg:{ 
+    fontSize: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontFamily: 'ubuntu',
+    textAlign: "center",
+    fontStyle: 'italic'
+  },
   welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-    justifyContent: 'flex-start'
+    fontSize: 15,
+    fontWeight: 'bold',
+    marginLeft: 8,
+    marginTop: 15,
+    marginBottom: 15,
+    justifyContent: 'flex-start',
+    color: 'white'
     
   },
   playImage: {

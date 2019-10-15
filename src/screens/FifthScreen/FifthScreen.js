@@ -4,28 +4,26 @@ import {
   Text,
   Image,
   View,
+  ScrollView,
   Modal,
   TouchableHighlight
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import ReactNativeSettingsPage, { 
-	SectionRow, 
-	NavigateRow,
-  CheckRow,
-  SwitchRow, 
-  SliderRow
-} from 'react-native-settings-page';
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20
+    flex: 1,
+    backgroundColor: '#ed3247',
   },
   welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+    fontSize: 15,
+    fontWeight: 'bold',
+    marginLeft: 8,
+    marginTop: 15,
+    marginBottom: 15,
+    justifyContent: 'flex-start',
+    color: 'white'
+    
   },
   tabIcon: {
     width: 16,
@@ -44,9 +42,13 @@ const styles = StyleSheet.create({
     padding: 100
   },
   titleText: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color : 'gray'
+    fontSize: 15,
+    color : 'black',
+    width: "100%",
+    borderLeftWidth: 2,
+    borderLeftColor: 'grey',
+    marginBottom: 5,
+    paddingLeft: 5
   },
   closeModal: {
     borderWidth: 1,
@@ -55,6 +57,15 @@ const styles = StyleSheet.create({
     width: "50%",
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  top: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    marginTop: 5,
+    width: "100%",
+    height: 900,
+    backgroundColor: 'white',
+    padding: 10
   },
 });
 
@@ -70,68 +81,14 @@ class FifthScreen extends Component {
   }
   render(){
     return (
-      <ReactNativeSettingsPage>
-      <SectionRow text='Settings'>
-        <NavigateRow
-          text='Export to CSV'
-          iconName='cogs'/>
-        <SwitchRow 
-          text='Max Record' 
-          iconName='cogs'
-          _value={this.state.switch}/>
-        <CheckRow 
-          text='Reset Records'
-          iconName='cogs'
-          _color='#000'
-          _value={this.state.check}/>
-       <CheckRow 
-          text='Help' 
-          iconName='cogs'
-          onPressCallback={() => {
-            this.setModalVisible(true);
-          }}
-          />
-        {/* <SliderRow 
-          text='Slider Row'
-          iconName='your-icon-name'
-          _color='#000'
-          _min={0}
-          _max={100}
-          _value={this.state.value}
-          _onValueChange={value => { this.setState({ value }) }} /> */}
-          <View>
-            <Modal
-              animationType="slide"
-              transparent={false}
-              visible={this.state.modalVisible}
-              onRequestClose={() => {
-                this.setModalVisible(!this.state.modalVisible);
-              }}>
-              <View style={{marginTop: 22}}>
-                <View style={styles.container}>
-                  <Image
-                    style={styles.image}
-                    source={require('../../../imgs/vector_man.png')}
-                  />
-                  <Text style={styles.baseText}>
-                  <Text style={styles.titleText} onPress={this.onPressTitle}>Device Placement{'\n'}</Text>
-                  <Text>Place the stethescope microphone close to the heart (erb's point).</Text>
-                  <Text style={styles.titleText} onPress={this.onPressTitle}>{'\n'}{'\n'}Record Duration{'\n'}</Text>
-                  <Text>Each heart sound recording must be 3 seconds or more than that.{'\n'}</Text>
-                  </Text>
-                  <TouchableHighlight
-                  style={styles.closeModal}
-                    onPress={() => {
-                      this.setModalVisible(!this.state.modalVisible);
-                    }}>
-                    <Text>Close</Text>
-                  </TouchableHighlight>
-                </View>
-              </View>
-            </Modal>
-          </View>  
-      </SectionRow>
-    </ReactNativeSettingsPage>
+      <ScrollView style={styles.container}>
+      <Text style={styles.welcome}>Settings</Text>
+      <View style={styles.top}>
+        <Text style={styles.titleText} onPress={this.onPressTitle}>Export to CSV</Text>
+        <Text style={styles.titleText} onPress={this.onPressTitle}>Clear Records</Text>
+        <Text style={styles.titleText} onPress={this.onPressTitle}>Credits</Text>
+       </View>
+       </ScrollView>
   
     );
   }
